@@ -5,5 +5,6 @@
 int main(int argc, char *argv[])
 {
     afficher_menu();
+    printf("zjkrzejz");
     return 0;
 }
