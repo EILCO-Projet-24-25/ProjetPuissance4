@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "menu.h"
 
-int main()
+int main(int argc, char *argv[])
 {
-    printf("Hello world!\n");
+    afficher_menu();
     return 0;
 }
