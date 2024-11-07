@@ -50,3 +50,7 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+Pu
+Puissance4.depend
+Puissance4.cbp
+Puissance4.layout
