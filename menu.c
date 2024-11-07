@@ -12,9 +12,14 @@ void effacer_ecran()
 #endif
 }
 
+void afficher_erreur(const char *message) {
+    printf("\033[1;31m");  // Code ANSI pour texte rouge
+    printf("%s\n", message);
+    printf("\033[0m");  // Réinitialisation de la couleur
+}
+
 char **definir_mode_jeu(int *lignes, int *colones, int *modeChoisi)
 {
-
     char mode;
     char **grille = NULL;
     do
@@ -24,7 +29,10 @@ char **definir_mode_jeu(int *lignes, int *colones, int *modeChoisi)
         printf("1. Jouer contre le Bot\n");
         printf("2. Joueur contre Joueur\n");
         printf("Entrez votre choix : \t");
-        mode = getchar();
+        scanf("%c", &mode);
+        // Nettoyer le tampon avant de saisir un choix
+        while (getchar() != '\n')
+            ; // Vide le tampon de saisie
         *modeChoisi = mode - '0';
         if (mode == '1')
         {
@@ -46,9 +54,13 @@ char **definir_mode_jeu(int *lignes, int *colones, int *modeChoisi)
         }
         else
         {
-            printf("Entree non valide. Veuillez entrer un chiffre entre 1-2.\n");
+            afficher_erreur("Entree non valide. Veuillez entrer un chiffre entre 1-2.");
+            // printf("Entree non valide. Veuillez entrer un chiffre entre 1-2.\n");
+            printf("\nAppuyez sur la touche entree pour reessayer...\n");
+            getchar(); // Attendre que l'utilisateur appuie sur une touche
+            effacer_ecran();
         }
-    } while (!isdigit(mode));
+    } while (!isdigit(mode) || mode != '1' || mode != '2');
     return grille;
 }
 

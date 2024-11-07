@@ -12,6 +12,7 @@ int main(int argc, char *argv[])
     {
         grille = definir_mode_jeu(&lignes, &colones, &modeChoisi);
         afficherGrille(grille, lignes, colones);
+        printf("Mode choisi %d",modeChoisi);
     }
     return 0;
 }
