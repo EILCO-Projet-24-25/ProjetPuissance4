@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <stdlib.h>
+#include "jeu.h"
 
 void effacer_ecran()
 {
@@ -11,39 +12,47 @@ void effacer_ecran()
 #endif
 }
 
-void definir_mode_jeu()
+char **definir_mode_jeu(int *lignes, int *colones, int *modeChoisi)
 {
-    effacer_ecran();
+
     char mode;
-    printf("\n=== Choisir le Mode de Jeu ===\n");
-    printf("1. Jouer contre le Bot\n");
-    printf("2. Joueur contre Joueur\n");
-    printf("Entrez votre choix : \t");
-    mode = getchar();
-    if (isdigit(mode))
+    char **grille = NULL;
+    do
     {
+        effacer_ecran();
+        printf("\n=== Choisir le Mode de Jeu ===\n");
+        printf("1. Jouer contre le Bot\n");
+        printf("2. Joueur contre Joueur\n");
+        printf("Entrez votre choix : \t");
+        mode = getchar();
+        *modeChoisi = mode - '0';
         if (mode == '1')
         {
             printf("Mode selectionne : Jouer contre le Bot\n");
+            printf("ligne de la grille: \t");
+            scanf("%d", lignes);
+            printf("\ncolone de la grille: \t");
+            scanf("%d", colones);
+            grille = creationGrille(*lignes, *colones);
         }
         else if (mode == '2')
         {
             printf("Mode selectionne : Joueur contre Joueur\n");
+            printf("ligne de la grille: \t");
+            scanf("%d", lignes);
+            printf("\ncolone de la grille: \t");
+            scanf("%d", colones);
+            grille = creationGrille(*lignes, *colones);
         }
         else
         {
             printf("Entree non valide. Veuillez entrer un chiffre entre 1-2.\n");
-            definir_mode_jeu();
         }
-    }
-    else
-    {
-        printf("Entree non valide. Veuillez entrer un chiffre entre 1-2.\n");
-        definir_mode_jeu();
-    }
+    } while (!isdigit(mode));
+    return grille;
 }
 
-void afficher_menu()
+char afficher_menu()
 {
     effacer_ecran();
     char choix;
@@ -56,14 +65,13 @@ void afficher_menu()
     printf("6. Quitter\n");
 
     printf("Entrez votre choix : \t");
-    choix = fgetc(stdin);
-    printf("%c", choix);
+    scanf("%c", &choix);
     if (isdigit(choix))
     {
         switch (choix)
         {
         case '1':
-            definir_mode_jeu();
+            printf("Choix du mode de jeu\n");
             break;
         case '2':
             printf("Revoir une partie\n");
@@ -89,6 +97,7 @@ void afficher_menu()
     else
     {
         printf("\nEntree non valide. Vrrrrrrrrreuillez entrer un chiffre entre 1-6.\n");
-        afficher_menu();
+        return afficher_menu();
     }
+    return choix;
 }

@@ -2,7 +2,7 @@
 #define MENU_H_INCLUDED
 
 void effacer_ecran();
-void definir_mode_jeu();
-void afficher_menu();
+char **definir_mode_jeu(int *lignes, int *colones, int *mode);
+char afficher_menu();
 
 #endif // MENU_H_INCLUDED

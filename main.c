@@ -1,10 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "menu.h"
+#include "jeu.h"
 
 int main(int argc, char *argv[])
 {
-    afficher_menu();
-    printf("zjkrzejz");
+    char **grille = NULL;
+    int lignes, colones, modeChoisi;
+    char choix = afficher_menu();
+    if (choix == 49)
+    {
+        grille = definir_mode_jeu(&lignes, &colones, &modeChoisi);
+        afficherGrille(grille, lignes, colones);
+    }
     return 0;
 }

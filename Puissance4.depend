@@ -1,8 +1,9 @@
 # depslib dependency file v1.0
-1730641793 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\main.c
+1730948428 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\main.c
 	<stdio.h>
 	<stdlib.h>
 	"menu.h"
+	"jeu.h"
 
 1564029384 c:\users\hp laptop\documents\ing1\algo\projetpuissance4\x86_64-w64-mingw32\include\sdl2\sdl.h
 	"SDL_main.h"
@@ -1392,10 +1393,17 @@
 	"begin_code.h"
 	"close_code.h"
 
-1730644856 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\menu.c
+1730948870 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\menu.c
 	<stdio.h>
 	<ctype.h>
 	<stdlib.h>
+	"jeu.h"
 
-1730643935 c:\users\hp laptop\documents\ing1\algo\projetpuissance4\menu.h
+1730948886 c:\users\hp laptop\documents\ing1\algo\projetpuissance4\menu.h
+
+1730944658 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\jeu.c
+	<stdio.h>
+	<stdlib.h>
+
+1730942958 c:\users\hp laptop\documents\ing1\algo\projetpuissance4\jeu.h
 

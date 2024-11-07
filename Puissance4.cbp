@@ -39,13 +39,20 @@
 		<Unit filename="Puissance4.depend" />
 		<Unit filename="Puissance4.layout" />
 		<Unit filename="README.md" />
+		<Unit filename="jeu.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="jeu.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="main.exe" />
 		<Unit filename="menu.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="menu.h" />
+		<Unit filename="obj/Debug/main.o" />
+		<Unit filename="obj/Debug/menu.o" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>
