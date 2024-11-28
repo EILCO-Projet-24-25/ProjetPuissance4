@@ -2,9 +2,11 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include "jeu.h"
+#include "parametre.h"
 
 void effacer_ecran()
 {
+    printf("Effacer Ecran\n");
 #ifdef _WIN32
     system("cls");
 #else
@@ -12,16 +14,18 @@ void effacer_ecran()
 #endif
 }
 
-void afficher_erreur(const char *message) {
-    printf("\033[1;31m");  // Code ANSI pour texte rouge
+void afficher_erreur(const char *message)
+{
+    printf("\033[1;31m"); // Code ANSI pour texte rouge
     printf("%s\n", message);
-    printf("\033[0m");  // Réinitialisation de la couleur
+    printf("\033[0m"); // Réinitialisation de la couleur
 }
 
-char **definir_mode_jeu(int *lignes, int *colones, int *modeChoisi)
+char **definir_mode_jeu(int *lignes, int *colones, int *modeChoisi, int *difficulte)
 {
     char mode;
     char **grille = NULL;
+    int firstTime = 0;
     do
     {
         effacer_ecran();
@@ -29,87 +33,122 @@ char **definir_mode_jeu(int *lignes, int *colones, int *modeChoisi)
         printf("1. Jouer contre le Bot\n");
         printf("2. Joueur contre Joueur\n");
         printf("Entrez votre choix : \t");
-        scanf("%c", &mode);
         // Nettoyer le tampon avant de saisir un choix
-        while (getchar() != '\n')
-            ; // Vide le tampon de saisie
-        *modeChoisi = mode - '0';
-        if (mode == '1')
+        if (firstTime == 0)
         {
-            printf("Mode selectionne : Jouer contre le Bot\n");
-            printf("ligne de la grille: \t");
-            scanf("%d", lignes);
-            printf("\ncolone de la grille: \t");
-            scanf("%d", colones);
-            grille = creationGrille(*lignes, *colones);
+            while (getchar() != '\n')
+                ;
         }
-        else if (mode == '2')
+        firstTime = 1;
+        // scanf("%c", &mode);
+        mode = fgetc(stdin);
+        *modeChoisi = mode - '0';
+        if (isdigit(mode))
         {
-            printf("Mode selectionne : Joueur contre Joueur\n");
-            printf("ligne de la grille: \t");
-            scanf("%d", lignes);
-            printf("\ncolone de la grille: \t");
-            scanf("%d", colones);
-            grille = creationGrille(*lignes, *colones);
+            if (mode == '1')
+            {
+                *difficulte = niveauDificulte();
+                printf("Mode selectionne : Jouer contre le Bot\n");
+                printf("ligne de la grille: \t");
+                scanf("%d", lignes);
+                printf("\ncolone de la grille: \t");
+                scanf("%d", colones);
+                grille = creationGrille(*lignes, *colones);
+                break;
+            }
+            else if (mode == '2')
+            {
+                printf("Mode selectionne : Joueur contre Joueur\n");
+                printf("ligne de la grille: \t");
+                scanf("%d", lignes);
+                printf("\ncolone de la grille: \t");
+                scanf("%d", colones);
+                grille = creationGrille(*lignes, *colones);
+                break;
+            }
+            else
+            {
+                afficher_erreur("Entree non valide. Veuillez entrer un chiffre entre 1-2.");
+                printf("\nAppuyez sur la touche entree pour reessayer...\n");
+                while (getchar() != '\n')
+                    ;
+                getchar();
+                effacer_ecran();
+            }
         }
         else
         {
             afficher_erreur("Entree non valide. Veuillez entrer un chiffre entre 1-2.");
-            // printf("Entree non valide. Veuillez entrer un chiffre entre 1-2.\n");
             printf("\nAppuyez sur la touche entree pour reessayer...\n");
-            getchar(); // Attendre que l'utilisateur appuie sur une touche
+            while (getchar() != '\n')
+                ;
+            getchar();
             effacer_ecran();
         }
-    } while (!isdigit(mode) || mode != '1' || mode != '2');
+
+    } while (mode != '1' || mode != '2');
     return grille;
 }
 
 char afficher_menu()
 {
-    effacer_ecran();
+    // effacer_ecran();
     char choix;
-    printf("\n=== Menu Principal ===\n");
-    printf("1. Choisir le Mode de Jeu (vs Bot ou vs Joueur)\n");
-    printf("2. Revoir une partie\n");
-    printf("3. Parametres\n");
-    printf("4. Aide\n");
-    printf("5. Statistiques\n");
-    printf("6. Quitter\n");
+    do
+    {
+        effacer_ecran();
+        printf("\n=== Menu Principal ===\n");
+        printf("1. Choisir le Mode de Jeu (vs Bot ou vs Joueur)\n");
+        printf("2. Revoir une partie\n");
+        printf("3. Parametres\n");
+        printf("4. Aide\n");
+        printf("5. Statistiques\n");
+        printf("6. Quitter\n");
 
-    printf("Entrez votre choix : \t");
-    scanf("%c", &choix);
-    if (isdigit(choix))
-    {
-        switch (choix)
+        printf("Entrez votre choix : \t");
+        scanf("%c", &choix);
+        if (isdigit(choix))
         {
-        case '1':
-            printf("Choix du mode de jeu\n");
-            break;
-        case '2':
-            printf("Revoir une partie\n");
-            break;
-        case '3':
-            printf("Parametres\n");
-            break;
-        case '4':
-            printf("Aide\n");
-            break;
-        case '5':
-            printf("Statistiques\n");
-            break;
-        case '6':
-            printf("Quitter\n");
-            break;
-        default:
-            printf("\nEntree non valide. Veuillez entrer un chiffre entre 1-6.\n");
-            afficher_menu();
-            break;
+            switch (choix)
+            {
+            case '1':
+                printf("Choix du mode de jeu\n");
+                break;
+            case '2':
+                printf("Revoir une partie\n");
+                break;
+            case '3':
+                printf("Parametres\n");
+                break;
+            case '4':
+                printf("Aide\n");
+                afficerAide();
+                break;
+            case '5':
+                printf("Statistiques\n");
+                break;
+            case '6':
+                quitterJeu();
+                break;
+            default:
+                afficher_erreur("\nEntree non valide. Veuillez entrer un chiffre entre 1-6.\n");
+                printf("\nAppuyez sur la touche entree pour reessayer...\n");
+                while (getchar() != '\n')
+                    ;
+                getchar();
+                afficher_menu();
+                break;
+            }
         }
-    }
-    else
-    {
-        printf("\nEntree non valide. Vrrrrrrrrreuillez entrer un chiffre entre 1-6.\n");
-        return afficher_menu();
-    }
+        else
+        {
+            afficher_erreur("\nEntree non valide. Veuillez entrer un chiffre entre 1-6.\n");
+            printf("\nAppuyez sur la touche entree pour reessayer...\n");
+            while (getchar() != '\n')
+                ;
+            getchar();
+            return afficher_menu();
+        }
+    } while (choix < '1' || choix > '6');
     return choix;
 }
