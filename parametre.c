@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <ctype.h>
+#include <string.h>
+#include <strings.h>
 #include "menu.h"
 
 void quitterJeu()
@@ -93,7 +95,7 @@ int niveauDificulte()
     while (getchar() != '\n')
         ;
     choix = fgetc(stdin);
-    printf("Choix %c\n", choix);
+    // printf("Choix %c\n", choix);
     if (isdigit(choix))
     {
         switch (choix)
@@ -119,4 +121,85 @@ int niveauDificulte()
         return niveauDificulte();
     }
     return choix;
+}
+void vider_tampon()
+{
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF)
+    {
+        // Ignore les caractères restants dans le tampon
+    }
+}
+void saisieNomJoueur(char *joueur1, char *joueur2, int choix)
+{
+    // printf("Choix %d\n", choix);
+    int err = 0;
+    vider_tampon();
+    do
+    {
+        err = 0;
+        printf("\nEntrez le nom du joueur 1 : \t");
+
+        if (fgets(joueur1, 12, stdin) != NULL)
+        {
+            joueur1[strcspn(joueur1, "\n")] = '\0'; // Supprimer le retour à la ligne
+        }
+        if (strcasecmp(joueur1, "Ordinateur") == 0 || strcasecmp(joueur1, "Ordi") == 0)
+        {
+            afficher_erreur("Ce nom est reserve pour l'ordinateur.\n");
+            printf("\nAppuyez sur la touche entree pour reessayer...\n");
+            err = 1;
+            while (getchar() != '\n')
+                ;
+            effacer_ecran();
+        }
+
+        // Verifier si la chaîne est vide ou contient uniquement des espaces
+        if (joueur1[0] == '\0' || joueur1[0] == ' ')
+        {
+            afficher_erreur("Vous n'avez rien saisi ou uniquement des espaces.\n");
+            printf("\nAppuyez sur la touche entree pour reessayer...\n");
+            while (getchar() != '\n')
+                ;
+            effacer_ecran();
+        }
+    } while (joueur1[0] == '\0' || joueur1[0] == ' ' || err == 1);
+
+    if (choix == 1)
+    {
+        strcpy(joueur2, "Ordinateur");
+    }
+    else if (choix == 2)
+    {
+        do
+        {
+            err = 0;
+            printf("\nEntrez le nom du joueur 2 : \t");
+
+            if (fgets(joueur2, 12, stdin) != NULL)
+            {
+                joueur2[strcspn(joueur2, "\n")] = '\0'; // Supprimer le retour à la ligne
+            }
+
+            if (strcasecmp(joueur1, joueur2) == 0)
+            {
+                afficher_erreur("Ce nom est deja pris par le joueur 1.\n");
+                printf("\nAppuyez sur la touche entree pour reessayer...\n");
+                err = 1;
+                while (getchar() != '\n')
+                    ;
+                effacer_ecran();
+            }
+
+            // Verifier si la chaîne est vide ou contient uniquement des espaces
+            if (joueur2[0] == '\0' || joueur2[0] == ' ')
+            {
+                afficher_erreur("Vous n'avez rien saisi ou uniquement des espaces.\n");
+                printf("\nAppuyez sur la touche entree pour reessayer...\n");
+                while (getchar() != '\n')
+                    ;
+                effacer_ecran();
+            }
+        } while (joueur2[0] == '\0' || joueur2[0] == ' ' || err == 1);
+    }
 }

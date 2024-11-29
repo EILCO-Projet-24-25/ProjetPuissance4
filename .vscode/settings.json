@@ -59,6 +59,10 @@
   "C_Cpp.errorSquiggles": "disabled",
   "files.associations": {
     "*.embeddedhtml": "html",
-    "stdio.h": "c"
+    "stdio.h": "c",
+    "*.tcc": "c",
+    "string": "c",
+    "istream": "c",
+    "string.h": "c"
   }
 }

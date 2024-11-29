@@ -3,7 +3,7 @@
 
 void afficher_erreur();
 void effacer_ecran();
-char **definir_mode_jeu(int *lignes, int *colones, int *mode, char *difficulte);
+char **definir_mode_jeu(int *lignes, int *colonnes, int *mode, int *difficulte);
 char afficher_menu();
 
 #endif // MENU_H_INCLUDED

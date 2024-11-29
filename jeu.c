@@ -1,22 +1,24 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "sauvegarde.h"
+#include "menu.h"
 
 char **creationGrille(int lignes, int colonnes)
 {
     char **grille = (char **)malloc(lignes * sizeof(char *));
     if (grille == NULL)
     {
-        printf("Erreur d'allocation de mémoire.\n");
+        printf("Erreur d'allocation de memoire.\n");
         exit(1);
     }
 
-    // Allocation de mémoire pour chaque ligne, etant donnee que nous sommes dans un tableau a 2 dimensions
+    // Allocation de memoire pour chaque ligne, etant donnee que nous sommes dans un tableau a 2 dimensions
     for (int i = 0; i < lignes; i++)
     {
         grille[i] = (char *)malloc(colonnes * sizeof(char));
         if (grille[i] == NULL)
         {
-            printf("Erreur d'allocation de mémoire pour la ligne %d.\n", i);
+            printf("Erreur d'allocation de memoire pour la ligne %d.\n", i);
             exit(1);
         }
     }
@@ -67,9 +69,9 @@ void afficherGrille(char **grille, int lignes, int colonnes)
     printf("\n");
 }
 
-int deposerPignon(char **grille, int colone, int colones, int lignes, char forme)
+int deposerPignon(char **grille, int colone, int colonnes, int lignes, char forme)
 {
-    if (colone < 0 || colone >= colones)
+    if (colone < 0 || colone >= colonnes)
         return 0;
 
     for (int i = lignes - 1; i >= 0; i--)
@@ -124,12 +126,12 @@ int verifier_victoire(char **grille, int lignes, int colonnes, char joueur)
     return 0;
 }
 
-// Fonction d'évaluation de la grille (simple)
+// Fonction d'evaluation de la grille (simple)
 int evaluer_grille(char **grille, int lignes, int colonnes)
 {
     int score = 0;
 
-    // Logique pour évaluer la grille : on peut ajouter des règles pour les alignements
+    // Logique pour evaluer la grille : on peut ajouter des règles pour les alignements
     for (int i = 0; i < lignes; i++)
     {
         for (int j = 0; j < colonnes; j++)
@@ -143,19 +145,19 @@ int evaluer_grille(char **grille, int lignes, int colonnes)
     return score;
 }
 
-// Fonction principale pour l'ordinateur avec niveaux de difficulté
+// Fonction principale pour l'ordinateur avec niveaux de difficulte
 int jouer_ordinateur(char **grille, int lignes, int colonnes, int niveau)
 {
     int meilleure_colonne = -1;
 
-    // Niveau 1 (Facile) : Choix aléatoire
+    // Niveau 1 (Facile) : Choix aleatoire
     if (niveau == 1)
     {
         do
         {
-            meilleure_colonne = rand() % colonnes; // Choisit une colonne aléatoire
-        } while (grille[0][meilleure_colonne] != ' '); // Vérifie que la colonne n'est pas pleine
-        deposerPignon(grille, meilleure_colonne, colonnes, lignes, 'O'); // Dépose le pion
+            meilleure_colonne = rand() % colonnes; // Choisit une colonne aleatoire
+        } while (grille[0][meilleure_colonne] != ' '); // Verifie que la colonne n'est pas pleine
+        deposerPignon(grille, meilleure_colonne, colonnes, lignes, 'O'); // Depose le pion
         return meilleure_colonne;
     }
 
@@ -187,60 +189,70 @@ int jouer_ordinateur(char **grille, int lignes, int colonnes, int niveau)
             }
         }
 
-        // Si aucun blocage nécessaire, joue aléatoirement
+        // Si aucun blocage necessaire, joue aleatoirement
         do
         {
             meilleure_colonne = rand() % colonnes;
-        } while (grille[0][meilleure_colonne] != ' '); // Vérifie que la colonne n'est pas pleine
+        } while (grille[0][meilleure_colonne] != ' '); // Verifie que la colonne n'est pas pleine
         deposerPignon(grille, meilleure_colonne, colonnes, lignes, 'O');
         return meilleure_colonne;
     }
 
-    // Niveau 3 (Difficile) : Prend la meilleure décision
+    // Niveau 3 (Difficile) : Prend la meilleure decision
     if (niveau == 3)
     {
         int meilleure_valeur = INT_MIN;
-        // On essaie de jouer dans chaque colonne et on évalue chaque coup
-        for (int col = 0; col < colonnes; col++) {
-            if (grille[0][col] == ' ') {
+        // On essaie de jouer dans chaque colonne et on evalue chaque coup
+        for (int col = 0; col < colonnes; col++)
+        {
+            if (grille[0][col] == ' ')
+            {
                 // Simule le coup de l'ordinateur
                 deposerPignon(grille, col, colonnes, lignes, 'O');
 
-                // Évalue la grille après avoir déposé le pion
+                // evalue la grille après avoir depose le pion
                 int valeur_coup = evaluer_grille(grille, lignes, colonnes);
 
                 // Si ce coup est le meilleur, on le garde
-                if (valeur_coup > meilleure_valeur) {
+                if (valeur_coup > meilleure_valeur)
+                {
                     meilleure_valeur = valeur_coup;
                     meilleure_colonne = col;
                 }
 
                 // Annule la simulation du coup
-                for (int i = 0; i < lignes; i++) {
-                    if (grille[i][col] == 'O') {
+                for (int i = 0; i < lignes; i++)
+                {
+                    if (grille[i][col] == 'O')
+                    {
                         grille[i][col] = ' ';
                         break;
                     }
                 }
             }
         }
-        // Dépose finalement le pion dans la meilleure colonne trouvée
+        // Depose finalement le pion dans la meilleure colonne trouvee
         deposerPignon(grille, meilleure_colonne, colonnes, lignes, 'O');
         return meilleure_colonne;
     }
 
-    return -1; // Aucun coup valide n'est trouvé
+    return -1; // Aucun coup valide n'est trouve
 }
 
-void jouer_tour_joueur(char **grille, int lignes, int colonnes)
+int jouer_tour_joueur(char **grille, int lignes, int colonnes)
 {
     int colonne;
     int coup_valide = 0;
     while (!coup_valide)
     {
-        printf("Votre tour (Joueur %c), choisissez une colonne (1 à %d) : ", 'X', colonnes);
+        printf("Votre tour (Joueur %c), choisissez une colonne (1 à %d) Ou 0 pour Sauvegarder la partie:  ", 'X', colonnes);
         scanf("%d", &colonne);
+        if (colonne == 0)
+        {
+            return 1;
+        }
         colonne -= 1; // Convertit en index 0-based
+
         if (colonne >= 0 && colonne < colonnes)
         {
             coup_valide = deposerPignon(grille, colonne, colonnes, lignes, 'X');
@@ -251,7 +263,8 @@ void jouer_tour_joueur(char **grille, int lignes, int colonnes)
         }
         else
         {
-            printf("Choix invalide. Veuillez choisir une colonne entre 1 et %d.\n", colonnes);
+            afficher_erreur("Choix invalide. Veuillez choisir bonne colonne.\n");
         }
     }
+    return 0;
 }

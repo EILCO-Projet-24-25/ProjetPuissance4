@@ -18,10 +18,10 @@ void afficher_erreur(const char *message)
 {
     printf("\033[1;31m"); // Code ANSI pour texte rouge
     printf("%s\n", message);
-    printf("\033[0m"); // Réinitialisation de la couleur
+    printf("\033[0m"); // Reinitialisation de la couleur
 }
 
-char **definir_mode_jeu(int *lignes, int *colones, int *modeChoisi, int *difficulte)
+char **definir_mode_jeu(int *lignes, int *colonnes, int *modeChoisi, int *difficulte)
 {
     char mode;
     char **grille = NULL;
@@ -52,8 +52,8 @@ char **definir_mode_jeu(int *lignes, int *colones, int *modeChoisi, int *difficu
                 printf("ligne de la grille: \t");
                 scanf("%d", lignes);
                 printf("\ncolone de la grille: \t");
-                scanf("%d", colones);
-                grille = creationGrille(*lignes, *colones);
+                scanf("%d", colonnes);
+                grille = creationGrille(*lignes, *colonnes);
                 break;
             }
             else if (mode == '2')
@@ -62,8 +62,8 @@ char **definir_mode_jeu(int *lignes, int *colones, int *modeChoisi, int *difficu
                 printf("ligne de la grille: \t");
                 scanf("%d", lignes);
                 printf("\ncolone de la grille: \t");
-                scanf("%d", colones);
-                grille = creationGrille(*lignes, *colones);
+                scanf("%d", colonnes);
+                grille = creationGrille(*lignes, *colonnes);
                 break;
             }
             else
@@ -96,6 +96,7 @@ char afficher_menu()
     char choix;
     do
     {
+        vider_tampon();
         effacer_ecran();
         printf("\n=== Menu Principal ===\n");
         printf("1. Choisir le Mode de Jeu (vs Bot ou vs Joueur)\n");

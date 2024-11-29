@@ -1,10 +1,11 @@
 # depslib dependency file v1.0
-1732725186 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\main.c
+1732865883 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\main.c
 	<stdio.h>
 	<stdlib.h>
 	"menu.h"
 	"jeu.h"
 	"parametre.h"
+	"sauvegarde.h"
 
 1564029384 c:\users\hp laptop\documents\ing1\algo\projetpuissance4\x86_64-w64-mingw32\include\sdl2\sdl.h
 	"SDL_main.h"
@@ -1394,30 +1395,37 @@
 	"begin_code.h"
 	"close_code.h"
 
-1732781032 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\menu.c
+1732865876 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\menu.c
 	<stdio.h>
 	<ctype.h>
 	<stdlib.h>
 	"jeu.h"
 	"parametre.h"
 
-1732724651 c:\users\hp laptop\documents\ing1\algo\projetpuissance4\menu.h
+1732865876 c:\users\hp laptop\documents\ing1\algo\projetpuissance4\menu.h
 
-1731059495 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\jeu.c
+1732865876 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\jeu.c
 	<stdio.h>
 	<stdlib.h>
+	"sauvegarde.h"
+	"menu.h"
 
-1731058582 c:\users\hp laptop\documents\ing1\algo\projetpuissance4\jeu.h
+1732865876 c:\users\hp laptop\documents\ing1\algo\projetpuissance4\jeu.h
 
 1730993202 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\puissance.c
 
-1732607194 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\sauvegarde.c
+1732866292 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\sauvegarde.c
+	<stdio.h>
 
-1732725123 c:\users\hp laptop\documents\ing1\algo\projetpuissance4\parametre.h
+1732866243 c:\users\hp laptop\documents\ing1\algo\projetpuissance4\parametre.h
 
-1732737793 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\parametre.c
+1732865093 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\parametre.c
 	<stdlib.h>
 	<stdio.h>
 	<ctype.h>
+	<string.h>
+	<strings.h>
 	"menu.h"
+
+1732864280 c:\users\hp laptop\documents\ing1\algo\projetpuissance4\sauvegarde.h
 
