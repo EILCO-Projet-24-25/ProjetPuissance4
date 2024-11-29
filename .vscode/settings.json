@@ -63,6 +63,7 @@
     "*.tcc": "c",
     "string": "c",
     "istream": "c",
-    "string.h": "c"
+    "string.h": "c",
+    "cstdlib": "c"
   }
 }

@@ -86,10 +86,11 @@ int niveauDificulte()
 {
     effacer_ecran();
     char choix;
-    printf("\n=== Niveau de diffucultes ===\n");
+    printf("\n=== Niveau de difficultes ===\n");
     printf("1. Facile\n");
     printf("2. Intermediaire\n");
     printf("3. Difficile\n");
+    printf("4. Retourner au menu principal\n");
 
     printf("Entrez votre choix : \t");
     while (getchar() != '\n')
@@ -107,6 +108,9 @@ int niveauDificulte()
             return choix;
             break;
         case '3':
+            return choix;
+            break;
+        case '4':
             return choix;
             break;
         default:

@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include "jeu.h"
 #include "parametre.h"
+#include "sauvegarde.h"
+#include "menu.h"
 
 void effacer_ecran()
 {
@@ -21,6 +23,60 @@ void afficher_erreur(const char *message)
     printf("\033[0m"); // Reinitialisation de la couleur
 }
 
+void afficher_succes(const char *message)
+{
+    printf("\033[1;32m"); // Code ANSI pour texte vert
+    printf("%s\n", message);
+    printf("\033[0m"); // Réinitialisation de la couleur
+}
+
+int sauvegardeMenu()
+{
+    char mode;
+    int firstTime = 0;
+    do
+    {
+        effacer_ecran();
+        printf("\n=== Options ===\n");
+        printf("1. Quitter et sauvegarder\n");
+        printf("2. Quitter sans sauvegarder\n");
+        printf("3. Annuler\n");
+        printf("Entrez votre choix : \t");
+        // Nettoyer le tampon avant de saisir un choix
+        if (firstTime == 0)
+        {
+            while (getchar() != '\n')
+                ;
+        }
+        firstTime = 1;
+        mode = fgetc(stdin);
+        if (!isdigit(mode))
+        {
+
+            afficher_erreur("Entree non valide. Veuillez entrer un chiffre entre 1-2.");
+            printf("\nAppuyez sur la touche entree pour reessayer...\n");
+            while (getchar() != '\n')
+                ;
+            getchar();
+            effacer_ecran();
+            continue;
+        }
+        if (mode != '1' && mode != '2' && mode != '3')
+        {
+            afficher_erreur("Entree non valide. Veuillezjjjjj entrer un chiffre entre 1-3.");
+            printf("\nAppuyez sur la touche entree pour reessayer...\n");
+            while (getchar() != '\n')
+                ;
+            getchar();
+            effacer_ecran();
+        }
+        else
+        {
+            break;
+        }
+    } while (1);
+    return mode;
+}
 char **definir_mode_jeu(int *lignes, int *colonnes, int *modeChoisi, int *difficulte)
 {
     char mode;
@@ -32,6 +88,7 @@ char **definir_mode_jeu(int *lignes, int *colonnes, int *modeChoisi, int *diffic
         printf("\n=== Choisir le Mode de Jeu ===\n");
         printf("1. Jouer contre le Bot\n");
         printf("2. Joueur contre Joueur\n");
+        printf("3. Retourner au Menu Principal\n");
         printf("Entrez votre choix : \t");
         // Nettoyer le tampon avant de saisir un choix
         if (firstTime == 0)
@@ -48,6 +105,13 @@ char **definir_mode_jeu(int *lignes, int *colonnes, int *modeChoisi, int *diffic
             if (mode == '1')
             {
                 *difficulte = niveauDificulte();
+                if (*difficulte - '0' == 4)
+                {
+                    effacer_ecran();
+                    afficher_menu();
+                    //printf("Difficutes %d",*difficulte);
+                    break;
+                }
                 printf("Mode selectionne : Jouer contre le Bot\n");
                 printf("ligne de la grille: \t");
                 scanf("%d", lignes);
@@ -64,6 +128,10 @@ char **definir_mode_jeu(int *lignes, int *colonnes, int *modeChoisi, int *diffic
                 printf("\ncolone de la grille: \t");
                 scanf("%d", colonnes);
                 grille = creationGrille(*lignes, *colonnes);
+                break;
+            }
+            else if (mode == '3')
+            {
                 break;
             }
             else
@@ -86,19 +154,22 @@ char **definir_mode_jeu(int *lignes, int *colonnes, int *modeChoisi, int *diffic
             effacer_ecran();
         }
 
-    } while (mode != '1' || mode != '2');
+    } while (mode != '1' || mode != '2' || mode != '3');
     return grille;
 }
 
 char afficher_menu()
 {
-    // effacer_ecran();
+    effacer_ecran();
     char choix;
     do
     {
-        vider_tampon();
-        effacer_ecran();
+        // int c;
+        // while ((c = fgetc(stdin)) != '\n' && c != EOF)
+        //     ;
         printf("\n=== Menu Principal ===\n");
+        if (verifierFichier("savegarde.txt") == 1)
+            printf("0. Pour continuer votre derniere partie\n");
         printf("1. Choisir le Mode de Jeu (vs Bot ou vs Joueur)\n");
         printf("2. Revoir une partie\n");
         printf("3. Parametres\n");
@@ -108,6 +179,11 @@ char afficher_menu()
 
         printf("Entrez votre choix : \t");
         scanf("%c", &choix);
+        if (verifierFichier("savegarde.txt") == 1 && choix == '0')
+        {
+            return choix;
+            break;
+        }
         if (isdigit(choix))
         {
             switch (choix)
@@ -133,10 +209,10 @@ char afficher_menu()
                 break;
             default:
                 afficher_erreur("\nEntree non valide. Veuillez entrer un chiffre entre 1-6.\n");
-                printf("\nAppuyez sur la touche entree pour reessayer...\n");
-                while (getchar() != '\n')
-                    ;
-                getchar();
+                // printf("\nAppuyez sur la touche entree pour reessayer...\n");
+                // while (getchar() != '\n')
+                //     ;
+                // getchar();
                 afficher_menu();
                 break;
             }
@@ -144,10 +220,10 @@ char afficher_menu()
         else
         {
             afficher_erreur("\nEntree non valide. Veuillez entrer un chiffre entre 1-6.\n");
-            printf("\nAppuyez sur la touche entree pour reessayer...\n");
-            while (getchar() != '\n')
-                ;
-            getchar();
+            // printf("\nAppuyez sur la touche entree pour reessayer...\n");
+            // while (getchar() != '\n')
+            //     ;
+            // getchar();
             return afficher_menu();
         }
     } while (choix < '1' || choix > '6');

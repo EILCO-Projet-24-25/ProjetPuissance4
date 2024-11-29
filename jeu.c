@@ -241,6 +241,7 @@ int jouer_ordinateur(char **grille, int lignes, int colonnes, int niveau)
 
 int jouer_tour_joueur(char **grille, int lignes, int colonnes)
 {
+    afficherGrille(grille, lignes, colonnes);
     int colonne;
     int coup_valide = 0;
     while (!coup_valide)
