@@ -6,30 +6,6 @@
 #include "sauvegarde.h"
 #include "menu.h"
 
-void effacer_ecran()
-{
-    printf("Effacer Ecran\n");
-#ifdef _WIN32
-    system("cls");
-#else
-    system("clear");
-#endif
-}
-
-void afficher_erreur(const char *message)
-{
-    printf("\033[1;31m"); // Code ANSI pour texte rouge
-    printf("%s\n", message);
-    printf("\033[0m"); // Reinitialisation de la couleur
-}
-
-void afficher_succes(const char *message)
-{
-    printf("\033[1;32m"); // Code ANSI pour texte vert
-    printf("%s\n", message);
-    printf("\033[0m"); // Réinitialisation de la couleur
-}
-
 int sauvegardeMenu()
 {
     char mode;
@@ -52,7 +28,6 @@ int sauvegardeMenu()
         mode = fgetc(stdin);
         if (!isdigit(mode))
         {
-
             afficher_erreur("Entree non valide. Veuillez entrer un chiffre entre 1-2.");
             printf("\nAppuyez sur la touche entree pour reessayer...\n");
             while (getchar() != '\n')
@@ -108,8 +83,7 @@ char **definir_mode_jeu(int *lignes, int *colonnes, int *modeChoisi, int *diffic
                 if (*difficulte - '0' == 4)
                 {
                     effacer_ecran();
-                    afficher_menu();
-                    //printf("Difficutes %d",*difficulte);
+                    lancer_jeu();
                     break;
                 }
                 printf("Mode selectionne : Jouer contre le Bot\n");

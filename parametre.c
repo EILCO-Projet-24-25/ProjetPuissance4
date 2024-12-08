@@ -11,6 +11,30 @@ void quitterJeu()
     exit(1);
 }
 
+void effacer_ecran()
+{
+    printf("Effacer Ecran\n");
+#ifdef _WIN32
+    system("cls");
+#else
+    system("clear");
+#endif
+}
+
+void afficher_erreur(const char *message)
+{
+    printf("\033[1;31m"); // Code ANSI pour texte rouge
+    printf("%s\n", message);
+    printf("\033[0m"); // Reinitialisation de la couleur
+}
+
+void afficher_succes(const char *message)
+{
+    printf("\033[1;32m"); // Code ANSI pour texte vert
+    printf("%s\n", message);
+    printf("\033[0m"); // Réinitialisation de la couleur
+}
+
 int continuerJeu(char *message)
 {
     char choix;

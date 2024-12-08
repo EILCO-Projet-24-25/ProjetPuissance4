@@ -11,5 +11,5 @@ int evaluer_grille(char **grille, int lignes, int colonnes);
 int jouer_ordinateur(char **grille, int lignes, int colonnes, int niveau);
 int jouer_tour_joueur(char **grille, int lignes, int colonnes);
 int chercher_victoire(char **grille, int lignes, int colonnes, char joueur);
-
+void lancer_jeu();
 #endif // JEU_H_INCLUDED
