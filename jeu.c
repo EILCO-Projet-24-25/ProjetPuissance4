@@ -46,6 +46,16 @@ void libererGrille(char **grille, int lignes)
     }
     free(grille);
 }
+void viderGrille(char **grille, int lignes, int colonnes)
+{
+    for (int i = 0; i < lignes; i++)
+    {
+        for (int j = 0; j < colonnes; j++)
+        {
+            grille[i][j] = ' ';
+        }
+    }
+}
 
 void afficherGrille(char **grille, int lignes, int colonnes)
 {
@@ -153,66 +163,91 @@ int verifier_victoire(char **grille, int lignes, int colonnes, char joueur)
     return 0;
 }
 
-static int compter_alignements(char **grille, int lignes, int colonnes, char pion, int longueur) {
+int compter_alignements(char **grille, int lignes, int colonnes, char pion, int longueur)
+{
     // Cette fonction compte le nombre de séquences de taille "longueur" formées par "pion"
     // consécutives dans la grille. Ce n'est qu'un exemple simplifié.
     int total = 0;
 
     // Horizontal
-    for (int i = 0; i < lignes; i++) {
-        for (int j = 0; j <= colonnes - longueur; j++) {
+    for (int i = 0; i < lignes; i++)
+    {
+        for (int j = 0; j <= colonnes - longueur; j++)
+        {
             int k;
-            for (k = 0; k < longueur; k++) {
-                if (grille[i][j+k] != pion) break;
+            for (k = 0; k < longueur; k++)
+            {
+                if (grille[i][j + k] != pion)
+                    break;
             }
-            if (k == longueur) total++;
+            if (k == longueur)
+                total++;
         }
     }
 
     // Vertical
-    for (int j = 0; j < colonnes; j++) {
-        for (int i = 0; i <= lignes - longueur; i++) {
+    for (int j = 0; j < colonnes; j++)
+    {
+        for (int i = 0; i <= lignes - longueur; i++)
+        {
             int k;
-            for (k = 0; k < longueur; k++) {
-                if (grille[i+k][j] != pion) break;
+            for (k = 0; k < longueur; k++)
+            {
+                if (grille[i + k][j] != pion)
+                    break;
             }
-            if (k == longueur) total++;
+            if (k == longueur)
+                total++;
         }
     }
 
     // Diagonale descendante
-    for (int i = 0; i <= lignes - longueur; i++) {
-        for (int j = 0; j <= colonnes - longueur; j++) {
+    for (int i = 0; i <= lignes - longueur; i++)
+    {
+        for (int j = 0; j <= colonnes - longueur; j++)
+        {
             int k;
-            for (k = 0; k < longueur; k++) {
-                if (grille[i+k][j+k] != pion) break;
+            for (k = 0; k < longueur; k++)
+            {
+                if (grille[i + k][j + k] != pion)
+                    break;
             }
-            if (k == longueur) total++;
+            if (k == longueur)
+                total++;
         }
     }
 
     // Diagonale montante
-    for (int i = longueur-1; i < lignes; i++) {
-        for (int j = 0; j <= colonnes - longueur; j++) {
+    for (int i = longueur - 1; i < lignes; i++)
+    {
+        for (int j = 0; j <= colonnes - longueur; j++)
+        {
             int k;
-            for (k = 0; k < longueur; k++) {
-                if (grille[i-k][j+k] != pion) break;
+            for (k = 0; k < longueur; k++)
+            {
+                if (grille[i - k][j + k] != pion)
+                    break;
             }
-            if (k == longueur) total++;
+            if (k == longueur)
+                total++;
         }
     }
 
     return total;
 }
 
-static int est_coup_valide(char **grille, int colonnes, int col) {
+int est_coup_valide(char **grille, int colonnes, int col)
+{
     return (col >= 0 && col < colonnes && grille[0][col] == ' ');
 }
 
-static void annuler_coup(char **grille, int lignes, int col, char pion) {
+void annuler_coup(char **grille, int lignes, int col, char pion)
+{
     // Retire le pion de la colonne (simuler un "undo")
-    for (int i = 0; i < lignes; i++) {
-        if (grille[i][col] == pion) {
+    for (int i = 0; i < lignes; i++)
+    {
+        if (grille[i][col] == pion)
+        {
             grille[i][col] = ' ';
             break;
         }
@@ -221,11 +256,14 @@ static void annuler_coup(char **grille, int lignes, int col, char pion) {
 
 // Fonction d'évaluation plus avancée pour le niveau 3
 // On donne un score en fonction des menaces et possibilités
-static int evaluer_position(char **grille, int lignes, int colonnes, char pionIA, char pionAdverse) {
+int evaluer_position(char **grille, int lignes, int colonnes, char pionIA, char pionAdverse)
+{
     // Si l'IA gagne
-    if (verifier_victoire(grille, lignes, colonnes, pionIA)) return 100000;
+    if (verifier_victoire(grille, lignes, colonnes, pionIA))
+        return 100000;
     // Si l'adversaire gagne
-    if (verifier_victoire(grille, lignes, colonnes, pionAdverse)) return -100000;
+    if (verifier_victoire(grille, lignes, colonnes, pionAdverse))
+        return -100000;
 
     // Compter les alignements 3 (quasi victoire) pour IA et adversaire
     int troisIA = compter_alignements(grille, lignes, colonnes, pionIA, 3);
@@ -246,42 +284,56 @@ static int evaluer_position(char **grille, int lignes, int colonnes, char pionIA
 //=====================================================================
 // Implémentation du minimax avec élagage alpha-bêta (Niveau 3)
 //=====================================================================
-static int minimax(char **grille, int lignes, int colonnes, int profondeur, int alpha, int beta, int maximisingPlayer, char pionIA, char pionAdverse) {
+int minimax(char **grille, int lignes, int colonnes, int profondeur, int alpha, int beta, int maximisingPlayer, char pionIA, char pionAdverse)
+{
     // Condition terminale
     int evaluation = evaluer_position(grille, lignes, colonnes, pionIA, pionAdverse);
-    if (profondeur == 0 || evaluation == 100000 || evaluation == -100000) {
+    if (profondeur == 0 || evaluation == 100000 || evaluation == -100000)
+    {
         return evaluation;
     }
 
-    if (maximisingPlayer) {
+    if (maximisingPlayer)
+    {
         int maxEval = INT_MIN;
-        for (int col = 0; col < colonnes; col++) {
-            if (est_coup_valide(grille, colonnes, col)) {
+        for (int col = 0; col < colonnes; col++)
+        {
+            if (est_coup_valide(grille, colonnes, col))
+            {
                 deposerPignon(grille, col, colonnes, lignes, pionIA);
                 int eval = minimax(grille, lignes, colonnes, profondeur - 1, alpha, beta, 0, pionIA, pionAdverse);
                 annuler_coup(grille, lignes, col, pionIA);
-                if (eval > maxEval) maxEval = eval;
-                if (eval > alpha) alpha = eval;
-                if (beta <= alpha) break; // élagage
+                if (eval > maxEval)
+                    maxEval = eval;
+                if (eval > alpha)
+                    alpha = eval;
+                if (beta <= alpha)
+                    break; // élagage
             }
         }
         return maxEval;
-    } else {
+    }
+    else
+    {
         int minEval = INT_MAX;
-        for (int col = 0; col < colonnes; col++) {
-            if (est_coup_valide(grille, colonnes, col)) {
+        for (int col = 0; col < colonnes; col++)
+        {
+            if (est_coup_valide(grille, colonnes, col))
+            {
                 deposerPignon(grille, col, colonnes, lignes, pionAdverse);
                 int eval = minimax(grille, lignes, colonnes, profondeur - 1, alpha, beta, 1, pionIA, pionAdverse);
                 annuler_coup(grille, lignes, col, pionAdverse);
-                if (eval < minEval) minEval = eval;
-                if (eval < beta) beta = eval;
-                if (beta <= alpha) break; // élagage
+                if (eval < minEval)
+                    minEval = eval;
+                if (eval < beta)
+                    beta = eval;
+                if (beta <= alpha)
+                    break; // élagage
             }
         }
         return minEval;
     }
 }
-
 
 // Fonction principale pour l'ordinateur avec niveaux de difficulte
 int jouer_ordinateur(char **grille, int lignes, int colonnes, int niveau, char pion1, char pion2)
@@ -302,17 +354,21 @@ int jouer_ordinateur(char **grille, int lignes, int colonnes, int niveau, char p
     }
 
     // Niveau 2 (Moyen) : Bloque les coups gagnants du joueur
-   if (niveau == 2) {
+    if (niveau == 2)
+    {
         // Niveau moyen : Stratégie simple améliorée
         int meilleurCoup = -1;
         int meilleurScore = INT_MIN;
 
-        for (int col = 0; col < colonnes; col++) {
-            if (est_coup_valide(grille, colonnes, col)) {
+        for (int col = 0; col < colonnes; col++)
+        {
+            if (est_coup_valide(grille, colonnes, col))
+            {
                 // Simuler le coup de l'IA
                 deposerPignon(grille, col, colonnes, lignes, pion2);
                 // Vérifier si ce coup gagne immédiatement
-                if (verifier_victoire(grille, lignes, colonnes, pion2)) {
+                if (verifier_victoire(grille, lignes, colonnes, pion2))
+                {
                     annuler_coup(grille, lignes, col, pion2);
                     deposerPignon(grille, col, colonnes, lignes, pion2);
                     return col; // On joue ce coup direct, victoire !
@@ -321,12 +377,15 @@ int jouer_ordinateur(char **grille, int lignes, int colonnes, int niveau, char p
                 // Sinon, vérifier si ce coup empêche une victoire adverse imminente
                 // Simuler le coup adverse suivant et voir s'il aurait pu gagner
                 int bloque = 0;
-                for (int c2 = 0; c2 < colonnes; c2++) {
-                    if (est_coup_valide(grille, colonnes, c2)) {
+                for (int c2 = 0; c2 < colonnes; c2++)
+                {
+                    if (est_coup_valide(grille, colonnes, c2))
+                    {
                         deposerPignon(grille, c2, colonnes, lignes, pion1);
-                        if (verifier_victoire(grille, lignes, colonnes, pion1)) {
+                        if (verifier_victoire(grille, lignes, colonnes, pion1))
+                        {
                             // Le joueur aurait pu gagner s'il jouait ici au prochain coup
-                            // Le fait d'avoir joué dans col empêche ce coup ? 
+                            // Le fait d'avoir joué dans col empêche ce coup ?
                             // Pas forcément, mais s'il y a un coup qui empêche cette victoire, on le préfère.
                             bloque = 1;
                         }
@@ -336,13 +395,15 @@ int jouer_ordinateur(char **grille, int lignes, int colonnes, int niveau, char p
 
                 // On évalue rapidement la position après ce coup
                 int score = 0;
-                if (bloque) score += 500; // On donne un bonus si on bloque une menace
+                if (bloque)
+                    score += 500; // On donne un bonus si on bloque une menace
                 // Ajout d'une petite heuristique
                 score += evaluer_position(grille, lignes, colonnes, pion2, pion1);
 
                 annuler_coup(grille, lignes, col, pion2);
 
-                if (score > meilleurScore) {
+                if (score > meilleurScore)
+                {
                     meilleurScore = score;
                     meilleurCoup = col;
                 }
@@ -350,47 +411,59 @@ int jouer_ordinateur(char **grille, int lignes, int colonnes, int niveau, char p
         }
 
         // Si aucun coup trouvé, joue aléatoirement
-        if (meilleurCoup == -1) {
+        if (meilleurCoup == -1)
+        {
             int col;
-            do {
+            do
+            {
                 col = rand() % colonnes;
             } while (!est_coup_valide(grille, colonnes, col));
             deposerPignon(grille, col, colonnes, lignes, pion2);
             return col;
-        } else {
+        }
+        else
+        {
             deposerPignon(grille, meilleurCoup, colonnes, lignes, pion2);
             return meilleurCoup;
         }
     }
 
-    if (niveau == 3) {
+    if (niveau == 3)
+    {
         // Niveau difficile : minimax avec élagage alpha-bêta
         int profondeur = 4; // Vous pouvez ajuster la profondeur
         int meilleurCoup = -1;
         int meilleurScore = INT_MIN;
 
-        for (int col = 0; col < colonnes; col++) {
-            if (est_coup_valide(grille, colonnes, col)) {
+        for (int col = 0; col < colonnes; col++)
+        {
+            if (est_coup_valide(grille, colonnes, col))
+            {
                 deposerPignon(grille, col, colonnes, lignes, pion2);
                 int score = minimax(grille, lignes, colonnes, profondeur - 1, INT_MIN, INT_MAX, 0, pion2, pion1);
                 annuler_coup(grille, lignes, col, pion2);
 
-                if (score > meilleurScore) {
+                if (score > meilleurScore)
+                {
                     meilleurScore = score;
                     meilleurCoup = col;
                 }
             }
         }
 
-        if (meilleurCoup == -1) {
+        if (meilleurCoup == -1)
+        {
             // Si aucun coup trouvé (improbable), jouer aléatoirement
             int col;
-            do {
+            do
+            {
                 col = rand() % colonnes;
             } while (!est_coup_valide(grille, colonnes, col));
             deposerPignon(grille, col, colonnes, lignes, pion2);
             return col;
-        } else {
+        }
+        else
+        {
             deposerPignon(grille, meilleurCoup, colonnes, lignes, pion2);
             return meilleurCoup;
         }
@@ -443,6 +516,82 @@ int random_1_2()
     return (rand() % 2) + 1; // Génère un nombre entre 1 et 2
 }
 
+void partie_ordi(char **grille, int lignes, int colonnes, char *joueur1, char *joueur2, int difficulte, int modeChoisi, int choix, char pion1, char pion2)
+{
+    int jeu_en_cours = 1;
+    while (jeu_en_cours)
+    {
+        // Tour du joueur humain
+        //;
+        effacer_ecran();
+        int quitter = 0;
+        while (jouer_tour_joueur(grille, lignes, colonnes, pion1, joueur1) == 1)
+        {
+            // effacer_ecran();
+            int tmp = sauvegardeMenu();
+            if (tmp == 1)
+            {
+                // Quitter et sauvegarder
+                sauvegarderJeu(grille, lignes, colonnes, "savegarde.txt", joueur1, joueur2, difficulte, modeChoisi, choix, pion1, pion2);
+                // effacer_ecran();
+                free(grille);
+                free(joueur1);
+                free(joueur2);
+                quitter = 1;
+                break;
+            }
+            else if (tmp == 2)
+            {
+                // Quitter sans sauvegarder
+                effacer_ecran();
+                free(grille);
+                free(joueur1);
+                free(joueur2);
+                quitter = 1;
+                break;
+            }
+        }
+        if (quitter == 1)
+        {
+            lancer_jeu();
+            break;
+        }
+        afficherGrille(grille, lignes, colonnes);
+
+        int victoire_joueur = verifier_victoire(grille, lignes, colonnes, pion1);
+        if (victoire_joueur == 1)
+        {
+            afficher_succes("Le joueur a gagne\n");
+            jeu_en_cours = 0;
+            break;
+        }
+        // Tour de l'ordinateur
+        printf("Tour de l'ordinateur...\n");
+        // printf("difficultes: %d\n", difficulte-'0');
+        // exit(1);
+        int colonne_ordi = jouer_ordinateur(grille, lignes, colonnes, difficulte, pion1, pion2);
+        printf("L'ordinateur a joue en colonne %d\n", colonne_ordi + 1);
+        afficherGrille(grille, lignes, colonnes);
+
+        // Condition de victoire ou de grille pleine ici...
+        int victoire_ordi = verifier_victoire(grille, lignes, colonnes, pion2);
+        if (victoire_ordi == 1)
+        {
+            afficher_succes("L'Ordi a gagne\n");
+            jeu_en_cours = 0;
+            break;
+        }
+    }
+
+    int choix_fin_partie = recommencerPartie(grille, lignes, joueur1, joueur2);
+    if (choix_fin_partie == 1)
+    {
+        effacer_ecran();
+        viderGrille(grille, lignes, colonnes);
+        partie_ordi(grille, lignes, colonnes, joueur1, joueur2, difficulte, modeChoisi, choix, pion1, pion2);
+    }
+}
+
 void lancer_jeu()
 {
     char **grille = NULL;
@@ -451,6 +600,10 @@ void lancer_jeu()
     char *joueur2 = (char *)malloc((12) * sizeof(char));
     int choix = afficher_menu() - '0';
     char pion1, pion2;
+    int tour = random_1_2();
+    char *staredJoueur = (char *)malloc(12 * sizeof(char));
+    char startedPion;
+
     // printf("Choix %d\n", choix);
     int oldChoice = 1;
     if (choix == 0)
@@ -458,9 +611,12 @@ void lancer_jeu()
         oldChoice = choix;
         grille = chargerJeu(&lignes, &colonnes, &difficulte, &modeChoisi, &choix, "savegarde.txt", joueur1, joueur2, &pion1, &pion2);
         afficherGrille(grille, lignes, colonnes);
-
-        printf("Lignes %d Colones %d difficultes %d modejeu %d choixjeu %d joueur1 %s joueur2%s pion1 %c pion2 %c\n", lignes, colonnes, difficulte, modeChoisi, choix, joueur1, joueur2, pion1, pion2);
-        printf("Old Choix %d", oldChoice);
+        if (modeChoisi == 2)
+        {
+            tour = difficulte;
+        }
+        // printf("Lignes %d Colones %d difficultes %d modejeu %d choixjeu %d joueur1 %s joueur2%s pion1 %c pion2 %c\n", lignes, colonnes, difficulte, modeChoisi, choix, joueur1, joueur2, pion1, pion2);
+        // printf("Old Choix %d", oldChoice);
         // exit(1);
     }
     if (choix == 1)
@@ -485,24 +641,60 @@ void lancer_jeu()
                 printf("Le pion du joueur1 %s est %c et le pion du joueur2 est %s et le pion %c\n", joueur1, pion1, joueur2, pion2);
                 // exit(1);
             }
+            else if (modeChoisi == 2)
+            {
+                saisieNomJoueur(joueur1, joueur2, modeChoisi);
+                printf("Joueur 1 %s\n", joueur1);
+                printf("Joueur 2 %s\n", joueur2);
+                printf("Choix des pions, le joueur %s commencera la partie en 1ere\n", tour == 1 ? joueur1 : joueur2);
+                if (tour == 1)
+                {
+                    pion1 = choisirPion(joueur1, '\0');
+                    pion2 = choisirPion(joueur2, pion1);
+                }
+                else
+                {
+                    pion2 = choisirPion(joueur2, '\0');
+                    pion1 = choisirPion(joueur1, pion2);
+                }
+            }
         }
         if (modeChoisi == 1)
         {
+            partie_ordi(grille, lignes, colonnes, joueur1, joueur2, difficulte, modeChoisi, choix, pion1, pion2);
+        }
+
+        else if (modeChoisi == 2)
+        {
+            // Jeu contre un autre joueur
+
             int jeu_en_cours = 1;
+
             while (jeu_en_cours)
             {
                 // Tour du joueur humain
                 //;
-                // effacer_ecran();
+                effacer_ecran();
                 int quitter = 0;
-                while (jouer_tour_joueur(grille, lignes, colonnes, pion1, joueur1) == 1)
+                if (tour == 1)
+                {
+                    strcpy(staredJoueur, joueur1);
+                    startedPion = pion1;
+                }
+                else
+                {
+                    strcpy(staredJoueur, joueur2);
+                    startedPion = pion2;
+                }
+
+                while (jouer_tour_joueur(grille, lignes, colonnes, startedPion, staredJoueur) == 1)
                 {
                     // effacer_ecran();
-                    int tmp = sauvegardeMenu() - '0';
+                    int tmp = sauvegardeMenu();
                     if (tmp == 1)
                     {
                         // Quitter et sauvegarder
-                        sauvegarderJeu(grille, lignes, colonnes, "savegarde.txt", joueur1, joueur2, difficulte, modeChoisi, choix, pion1, pion2);
+                        sauvegarderJeu(grille, lignes, colonnes, "savegarde.txt", joueur1, joueur2, tour, modeChoisi, choix, pion1, pion2);
                         // effacer_ecran();
                         free(grille);
                         free(joueur1);
@@ -528,42 +720,25 @@ void lancer_jeu()
                 }
                 afficherGrille(grille, lignes, colonnes);
 
-                int victoire_joueur = verifier_victoire(grille, lignes, colonnes, pion1);
+                int victoire_joueur = verifier_victoire(grille, lignes, colonnes, startedPion);
                 if (victoire_joueur == 1)
                 {
-                    afficher_succes("Le joueur a gagne\n");
+                    afficher_succes("Vous avez gagne lar partie\n");
                     jeu_en_cours = 0;
                     break;
                 }
-                // Tour de l'ordinateur
-                printf("Tour de l'ordinateur...\n");
-                // printf("difficultes: %d\n", difficulte-'0');
-                // exit(1);
-                int colonne_ordi = jouer_ordinateur(grille, lignes, colonnes, difficulte, pion1, pion2);
-                printf("L'ordinateur a joue en colonne %d\n", colonne_ordi + 1);
-                afficherGrille(grille, lignes, colonnes);
-
-                // Condition de victoire ou de grille pleine ici...
-                int victoire_ordi = verifier_victoire(grille, lignes, colonnes, pion2);
-                if (victoire_ordi == 1)
-                {
-                    afficher_succes("L'Ordi a gagne\n");
-                    jeu_en_cours = 0;
-                    break;
-                }
+                tour = (tour % 2) + 1;
             }
-            libererGrille(grille, lignes);
-        }
 
-        else if (modeChoisi == 2)
-        {
-            // Jeu contre un autre joueur
-            saisieNomJoueur(joueur1, joueur2, modeChoisi);
-            printf("Joueur 1 %s\n", joueur1);
-            printf("Joueur 2 %s\n", joueur2);
-            int joueur_qui_debute = random_1_2();
-            printf("Le joueur qui debute est  %d\n", joueur_qui_debute);
-            free(grille);
+            // int choix_fin_partie = recommencerPartie(grille, lignes, joueur1, joueur2);
+            // if (choix_fin_partie == 1)
+            // {
+            //     effacer_ecran();
+            //     viderGrille(grille, lignes, colonnes);
+            //     partie_ordi(grille, lignes, colonnes, joueur1, joueur2, difficulte, modeChoisi, choix, pion1, pion2);
+            // }
+
+            libererGrille(grille, lignes);
             free(joueur1);
             free(joueur2);
             quitterJeu();
@@ -571,7 +746,7 @@ void lancer_jeu()
     }
     if (choix == 6)
     {
-        free(grille);
+        libererGrille(grille, lignes);
         free(joueur1);
         free(joueur2);
         quitterJeu();

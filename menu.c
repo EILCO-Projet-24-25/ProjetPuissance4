@@ -28,7 +28,7 @@ int sauvegardeMenu()
         mode = fgetc(stdin);
         if (!isdigit(mode))
         {
-            afficher_erreur("Entree non valide. Veuillez entrer un chiffre entre 1-2.");
+            afficher_erreur("Entree non valide. Veuillez entrer un chiffre entre 1-3.");
             printf("\nAppuyez sur la touche entree pour reessayer...\n");
             while (getchar() != '\n')
                 ;
@@ -50,8 +50,55 @@ int sauvegardeMenu()
             break;
         }
     } while (1);
-    return mode;
+    return mode - '0';
 }
+
+int recommencerPartie()
+{
+    char mode;
+    int firstTime = 0;
+    do
+    {
+        // effacer_ecran();
+        printf("\n=== Options ===\n");
+        printf("1. Recommencer la partie\n");
+        printf("2. Retourner au menu\n");
+        printf("Entrez votre choix : \t");
+        // Nettoyer le tampon avant de saisir un choix
+        if (firstTime == 0)
+        {
+            while (getchar() != '\n')
+                ;
+        }
+        firstTime = 1;
+        mode = fgetc(stdin);
+        if (!isdigit(mode))
+        {
+            afficher_erreur("Entree non valide. Veuillez entrer un chiffre entre 1-2.");
+            printf("\nAppuyez sur la touche entree pour reessayer...\n");
+            while (getchar() != '\n')
+                ;
+            getchar();
+            effacer_ecran();
+            continue;
+        }
+        if (mode != '1' && mode != '2')
+        {
+            afficher_erreur("Entree non valide. Veuillezjjjjj entrer un chiffre entre 1-2.");
+            printf("\nAppuyez sur la touche entree pour reessayer...\n");
+            while (getchar() != '\n')
+                ;
+            getchar();
+            effacer_ecran();
+        }
+        else
+        {
+            break;
+        }
+    } while (1);
+    return mode - '0';
+}
+
 char **definir_mode_jeu(int *lignes, int *colonnes, int *modeChoisi, int *difficulte)
 {
     char mode;
