@@ -1395,7 +1395,7 @@
 	"begin_code.h"
 	"close_code.h"
 
-1734182299 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\menu.c
+1734205920 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\menu.c
 	<stdio.h>
 	<ctype.h>
 	<stdlib.h>
@@ -1404,9 +1404,9 @@
 	"sauvegarde.h"
 	"menu.h"
 
-1734182246 c:\users\hp laptop\documents\ing1\algo\projetpuissance4\menu.h
+1734199939 c:\users\hp laptop\documents\ing1\algo\projetpuissance4\menu.h
 
-1734185980 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\jeu.c
+1734205930 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\jeu.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -1415,7 +1415,7 @@
 	"menu.h"
 	"parametre.h"
 
-1734186008 c:\users\hp laptop\documents\ing1\algo\projetpuissance4\jeu.h
+1734206073 c:\users\hp laptop\documents\ing1\algo\projetpuissance4\jeu.h
 
 1730993202 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\puissance.c
 

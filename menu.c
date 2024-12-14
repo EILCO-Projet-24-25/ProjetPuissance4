@@ -53,7 +53,7 @@ int sauvegardeMenu()
     return mode - '0';
 }
 
-int recommencerPartie()
+int recommencerPartie(char **grille, int lignes, char *joueur1, char *joueur2)
 {
     char mode;
     int firstTime = 0;
@@ -96,6 +96,14 @@ int recommencerPartie()
             break;
         }
     } while (1);
+    if (mode - '0' == 2)
+    {
+        effacer_ecran();
+        libererGrille(grille, lignes);
+        free(joueur1);
+        free(joueur2);
+        lancer_jeu();
+    }
     return mode - '0';
 }
 

@@ -591,6 +591,79 @@ void partie_ordi(char **grille, int lignes, int colonnes, char *joueur1, char *j
         partie_ordi(grille, lignes, colonnes, joueur1, joueur2, difficulte, modeChoisi, choix, pion1, pion2);
     }
 }
+void partie_joueur(char **grille, int lignes, int colonnes, char *joueur1, char *joueur2, int difficulte, int modeChoisi, int choix, char pion1, char pion2, char *startedPion, char *startedJoueur, int *tour)
+{
+    int jeu_en_cours = 1;
+
+    while (jeu_en_cours)
+    {
+        // Tour du joueur humain
+        //;
+        effacer_ecran();
+        int quitter = 0;
+        if (*tour == 1)
+        {
+            strcpy(startedJoueur, joueur1);
+            *startedPion = pion1;
+        }
+        else
+        {
+            strcpy(startedJoueur, joueur2);
+            *startedPion = pion2;
+        }
+
+        while (jouer_tour_joueur(grille, lignes, colonnes, *startedPion, startedJoueur) == 1)
+        {
+            // effacer_ecran();
+            int tmp = sauvegardeMenu();
+            if (tmp == 1)
+            {
+                // Quitter et sauvegarder
+                sauvegarderJeu(grille, lignes, colonnes, "savegarde.txt", joueur1, joueur2, *tour, modeChoisi, choix, pion1, pion2);
+                // effacer_ecran();
+                free(grille);
+                free(joueur1);
+                free(joueur2);
+                quitter = 1;
+                break;
+            }
+            else if (tmp == 2)
+            {
+                // Quitter sans sauvegarder
+                effacer_ecran();
+                free(grille);
+                free(joueur1);
+                free(joueur2);
+                quitter = 1;
+                break;
+            }
+        }
+        if (quitter == 1)
+        {
+            lancer_jeu();
+            break;
+        }
+        afficherGrille(grille, lignes, colonnes);
+
+        int victoire_joueur = verifier_victoire(grille, lignes, colonnes, *startedPion);
+        if (victoire_joueur == 1)
+        {
+            afficher_succes("Vous avez gagne lar partie\n");
+            jeu_en_cours = 0;
+            break;
+        }
+        *tour = (*tour % 2) + 1;
+    }
+
+    int choix_fin_partie = recommencerPartie(grille, lignes, joueur1, joueur2);
+    if (choix_fin_partie == 1)
+    {
+        effacer_ecran();
+        viderGrille(grille, lignes, colonnes);
+        *tour = (*tour % 2) + 1;
+        partie_joueur(grille, lignes, colonnes, joueur1, joueur2, difficulte, modeChoisi, choix, pion1, pion2, startedPion, startedJoueur, tour);
+    }
+}
 
 void lancer_jeu()
 {
@@ -601,7 +674,7 @@ void lancer_jeu()
     int choix = afficher_menu() - '0';
     char pion1, pion2;
     int tour = random_1_2();
-    char *staredJoueur = (char *)malloc(12 * sizeof(char));
+    char *startedJoueur = (char *)malloc(12 * sizeof(char));
     char startedPion;
 
     // printf("Choix %d\n", choix);
@@ -610,6 +683,7 @@ void lancer_jeu()
     {
         oldChoice = choix;
         grille = chargerJeu(&lignes, &colonnes, &difficulte, &modeChoisi, &choix, "savegarde.txt", joueur1, joueur2, &pion1, &pion2);
+        remove("savegarde.txt");
         afficherGrille(grille, lignes, colonnes);
         if (modeChoisi == 2)
         {
@@ -667,88 +741,14 @@ void lancer_jeu()
         else if (modeChoisi == 2)
         {
             // Jeu contre un autre joueur
-
-            int jeu_en_cours = 1;
-
-            while (jeu_en_cours)
-            {
-                // Tour du joueur humain
-                //;
-                effacer_ecran();
-                int quitter = 0;
-                if (tour == 1)
-                {
-                    strcpy(staredJoueur, joueur1);
-                    startedPion = pion1;
-                }
-                else
-                {
-                    strcpy(staredJoueur, joueur2);
-                    startedPion = pion2;
-                }
-
-                while (jouer_tour_joueur(grille, lignes, colonnes, startedPion, staredJoueur) == 1)
-                {
-                    // effacer_ecran();
-                    int tmp = sauvegardeMenu();
-                    if (tmp == 1)
-                    {
-                        // Quitter et sauvegarder
-                        sauvegarderJeu(grille, lignes, colonnes, "savegarde.txt", joueur1, joueur2, tour, modeChoisi, choix, pion1, pion2);
-                        // effacer_ecran();
-                        free(grille);
-                        free(joueur1);
-                        free(joueur2);
-                        quitter = 1;
-                        break;
-                    }
-                    else if (tmp == 2)
-                    {
-                        // Quitter sans sauvegarder
-                        effacer_ecran();
-                        free(grille);
-                        free(joueur1);
-                        free(joueur2);
-                        quitter = 1;
-                        break;
-                    }
-                }
-                if (quitter == 1)
-                {
-                    lancer_jeu();
-                    break;
-                }
-                afficherGrille(grille, lignes, colonnes);
-
-                int victoire_joueur = verifier_victoire(grille, lignes, colonnes, startedPion);
-                if (victoire_joueur == 1)
-                {
-                    afficher_succes("Vous avez gagne lar partie\n");
-                    jeu_en_cours = 0;
-                    break;
-                }
-                tour = (tour % 2) + 1;
-            }
-
-            // int choix_fin_partie = recommencerPartie(grille, lignes, joueur1, joueur2);
-            // if (choix_fin_partie == 1)
-            // {
-            //     effacer_ecran();
-            //     viderGrille(grille, lignes, colonnes);
-            //     partie_ordi(grille, lignes, colonnes, joueur1, joueur2, difficulte, modeChoisi, choix, pion1, pion2);
-            // }
-
+            partie_joueur(grille, lignes, colonnes, joueur1, joueur2, difficulte, modeChoisi, choix, pion1, pion2, &startedPion, startedJoueur, &tour);
+        }
+        if (choix == 6)
+        {
             libererGrille(grille, lignes);
             free(joueur1);
             free(joueur2);
             quitterJeu();
         }
-    }
-    if (choix == 6)
-    {
-        libererGrille(grille, lignes);
-        free(joueur1);
-        free(joueur2);
-        quitterJeu();
     }
 }
