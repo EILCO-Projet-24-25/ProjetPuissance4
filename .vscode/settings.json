@@ -64,6 +64,7 @@
     "string": "c",
     "istream": "c",
     "string.h": "c",
-    "cstdlib": "c"
+    "cstdlib": "c",
+    "sauvegarde.h": "c"
   }
 }

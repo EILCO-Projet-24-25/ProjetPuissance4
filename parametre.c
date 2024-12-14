@@ -4,6 +4,7 @@
 #include <string.h>
 #include <strings.h>
 #include "menu.h"
+#include "jeu.h"
 
 void quitterJeu()
 {
@@ -98,7 +99,7 @@ void afficerAide()
     if (continuerJeu("Retourner sur le menu? Saisir 1 Pour Oui 0 Pour quitter le jeu....") == 49)
     {
         effacer_ecran();
-        afficher_menu();
+        lancer_jeu();
     }
     else
     {
@@ -126,16 +127,16 @@ int niveauDificulte()
         switch (choix)
         {
         case '1':
-            return choix;
+            return choix - '0';
             break;
         case '2':
-            return choix;
+            return choix - '0';
             break;
         case '3':
-            return choix;
+            return choix - '0';
             break;
         case '4':
-            return choix;
+            return choix - '0';
             break;
         default:
             afficher_erreur("\nEntree non valide. Veuillez entrer un chiffre entre 1 - 3.\n");
@@ -148,7 +149,7 @@ int niveauDificulte()
         afficher_erreur("\nEntree non valide. Veuillez entrer un chiffre entre 1 - 3.\n");
         return niveauDificulte();
     }
-    return choix;
+    return choix - '0';
 }
 void vider_tampon()
 {

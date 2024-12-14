@@ -30,7 +30,7 @@ int verifierFichier(const char *nomFichier)
     }
 }
 
-void sauvegarderJeu(char **grille, int lignes, int colonnes, const char *nomFichier, char *joueur1, char *joueur2, int difficultes, int modejeu, int choixjeu)
+void sauvegarderJeu(char **grille, int lignes, int colonnes, const char *nomFichier, char *joueur1, char *joueur2, int difficultes, int modejeu, int choixjeu, char pion1, char pion2)
 {
     FILE *fichier = fopen(nomFichier, "w");
     if (fichier == NULL)
@@ -39,7 +39,7 @@ void sauvegarderJeu(char **grille, int lignes, int colonnes, const char *nomFich
         return;
     }
 
-    fprintf(fichier, "%d %d %d %d %d %s %s\n", lignes, colonnes, difficultes, modejeu, choixjeu, joueur1, joueur2); // Sauvegarde du nombre de lignes, colones, difficultes, mode de jeu, joueur1, joueur2
+    fprintf(fichier, "%d %d %d %d %d %s %s %c %c\n", lignes, colonnes, difficultes, modejeu, choixjeu, joueur1, joueur2, pion1, pion2); // Sauvegarde du nombre de lignes, colones, difficultes, mode de jeu, joueur1, joueur2
 
     for (int i = 0; i < lignes; i++)
     {
@@ -60,7 +60,7 @@ void sauvegarderJeu(char **grille, int lignes, int colonnes, const char *nomFich
     fclose(fichier);
 }
 
-char **chargerJeu(int *lignes, int *colonnes, int *difficultes, int *modejeu, int *choixjeu, const char *nomFichier, char *joueur1, char *joueur2)
+char **chargerJeu(int *lignes, int *colonnes, int *difficultes, int *modejeu, int *choixjeu, const char *nomFichier, char *joueur1, char *joueur2, char *pion1, char *pion2)
 {
     printf("Charger une partie");
     char **grille = NULL;
@@ -73,9 +73,9 @@ char **chargerJeu(int *lignes, int *colonnes, int *difficultes, int *modejeu, in
     }
 
     // Lecture de la première ligne pour les métadonnées
-    if (fscanf(fichier, "%d %d %d %d %d %s %s\n", lignes, colonnes, difficultes, modejeu, choixjeu, joueur1, joueur2) != 7)
+    if (fscanf(fichier, "%d %d %d %d %d %s %s %c %c\n", lignes, colonnes, difficultes, modejeu, choixjeu, joueur1, joueur2, pion1, pion2) != 9)
     {
-        fprintf(stderr, "Erreur lors de la lecture des métadonnées du fichier.\n");
+        fprintf(stderr, "\nErreur lors de la lecture des metadonnees du fichier.\n");
         fclose(fichier);
         exit(1);
     }

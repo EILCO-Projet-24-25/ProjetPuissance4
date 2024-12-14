@@ -80,7 +80,7 @@ char **definir_mode_jeu(int *lignes, int *colonnes, int *modeChoisi, int *diffic
             if (mode == '1')
             {
                 *difficulte = niveauDificulte();
-                if (*difficulte - '0' == 4)
+                if (*difficulte == 4)
                 {
                     effacer_ecran();
                     lancer_jeu();
@@ -179,7 +179,7 @@ char afficher_menu()
                 printf("Statistiques\n");
                 break;
             case '6':
-                quitterJeu();
+                printf("Quitter le jeu\n");
                 break;
             default:
                 afficher_erreur("\nEntree non valide. Veuillez entrer un chiffre entre 1-6.\n");
