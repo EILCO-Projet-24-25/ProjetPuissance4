@@ -13,4 +13,15 @@ int jouer_tour_joueur(char **grille, int lignes, int colonnes, char pion, char *
 int random_1_2();
 void lancer_jeu();
 void partie_ordi(char **grille, int lignes, int colonnes, char *joueur1, char *joueur2, int difficulte, int modeChoisi, int choix, char pion1, char pion2);
+
+
+
+//Statistiques 
+typedef struct {
+    char nom[50];
+    int victoires;
+    int defaites;
+    int partiesJouees;
+} StatistiqueJoueur;
+
 #endif // JEU_H_INCLUDED

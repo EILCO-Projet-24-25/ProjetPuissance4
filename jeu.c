@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <limits.h>
 #include <time.h>
 #include "sauvegarde.h"
 #include "menu.h"
@@ -751,4 +752,57 @@ void lancer_jeu()
             quitterJeu();
         }
     }
+}
+
+
+//Statistiques
+// Fonction pour charger les statistiques depuis un fichier
+int chargerStatistiques(const char *nomFichier, Statistiques stats[], int tailleMax) {
+    FILE *file = fopen(nomFichier, "r");
+    if (file == NULL) {
+        printf("Fichier de statistiques introuvable, création d'un nouveau fichier.\n");
+        return 0;
+    }
+
+    int i = 0;
+    while (i < tailleMax && fscanf(file, "%s %d %d %d", stats[i].nom, &stats[i].victoires, &stats[i].defaites, &stats[i].nulles) == 4) {
+        i++;
+    }
+
+    fclose(file);
+    return i; // Nombre d'entrées chargées
+}
+
+// Fonction pour sauvegarder les statistiques dans un fichier
+void sauvegarderStatistiques(const char *nomFichier, Statistiques stats[], int taille) {
+    FILE *file = fopen(nomFichier, "w");
+    if (file == NULL) {
+        printf("Erreur lors de l'ouverture du fichier de statistiques.\n");
+        return;
+    }
+
+    for (int i = 0; i < taille; i++) {
+        fprintf(file, "%s %d %d %d\n", stats[i].nom, stats[i].victoires, stats[i].defaites, stats[i].nulles);
+    }
+
+    fclose(file);
+}
+
+// Fonction pour mettre à jour les statistiques d'un joueur
+void mettreAJourStatistiques(Statistiques stats[], int *taille, const char *nomJoueur, int victoire, int defaite, int nulle) {
+    for (int i = 0; i < *taille; i++) {
+        if (strcmp(stats[i].nom, nomJoueur) == 0) {
+            stats[i].victoires += victoire;
+            stats[i].defaites += defaite;
+            stats[i].nulles += nulle;
+            return;
+        }
+    }
+
+    // Si le joueur n'existe pas, on l'ajoute
+    strcpy(stats[*taille].nom, nomJoueur);
+    stats[*taille].victoires = victoire;
+    stats[*taille].defaites = defaite;
+    stats[*taille].nulles = nulle;
+    (*taille)++;
 }

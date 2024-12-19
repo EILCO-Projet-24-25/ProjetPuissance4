@@ -1437,3 +1437,44 @@
 
 1733770319 c:\users\hp laptop\documents\ing1\algo\projetpuissance4\sauvegarde.h
 
+1734334808 source:/home/celsia/workspace_c/ProjetPuissance4/main.c
+	<stdio.h>
+	<stdlib.h>
+	"menu.h"
+	"jeu.h"
+	"parametre.h"
+	"sauvegarde.h"
+
+1734334808 /home/celsia/workspace_c/ProjetPuissance4/menu.h
+
+1734334808 /home/celsia/workspace_c/ProjetPuissance4/jeu.h
+
+1734334808 /home/celsia/workspace_c/ProjetPuissance4/parametre.h
+
+1734334808 /home/celsia/workspace_c/ProjetPuissance4/sauvegarde.h
+
+1734334808 source:/home/celsia/workspace_c/ProjetPuissance4/menu.c
+	<stdio.h>
+	<ctype.h>
+	<stdlib.h>
+	"jeu.h"
+	"parametre.h"
+	"sauvegarde.h"
+	"menu.h"
+
+1734334808 source:/home/celsia/workspace_c/ProjetPuissance4/parametre.c
+	<stdlib.h>
+	<stdio.h>
+	<ctype.h>
+	<string.h>
+	<strings.h>
+	"menu.h"
+	"jeu.h"
+
+1732885342 source:/home/celsia/workspace_c/ProjetPuissance4/puissance.c
+
+1734334808 source:/home/celsia/workspace_c/ProjetPuissance4/sauvegarde.c
+	<stdio.h>
+	<stdlib.h>
+	"jeu.h"
+
