@@ -1395,7 +1395,7 @@
 	"begin_code.h"
 	"close_code.h"
 
-1734332830 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\menu.c
+1734618009 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\menu.c
 	<stdio.h>
 	<ctype.h>
 	<stdlib.h>
@@ -1406,7 +1406,7 @@
 
 1734199939 c:\users\hp laptop\documents\ing1\algo\projetpuissance4\menu.h
 
-1734338071 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\jeu.c
+1734638314 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\jeu.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -1415,9 +1415,10 @@
 	"menu.h"
 	"parametre.h"
 	"temps.h"
+	"jeu.h"
 	<limits.h>
 
-1734337008 c:\users\hp laptop\documents\ing1\algo\projetpuissance4\jeu.h
+1734638221 c:\users\hp laptop\documents\ing1\algo\projetpuissance4\jeu.h
 
 1730993202 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\puissance.c
 
@@ -1428,7 +1429,7 @@
 
 1733698861 c:\users\hp laptop\documents\ing1\algo\projetpuissance4\parametre.h
 
-1734337552 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\parametre.c
+1734618009 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\parametre.c
 	<stdlib.h>
 	<stdio.h>
 	<ctype.h>
@@ -1479,6 +1480,7 @@
 	<stdio.h>
 	<stdlib.h>
 	"jeu.h"
+
 1734336756 c:\users\hp laptop\documents\ing1\algo\projetpuissance4\temps.h
 
 1734336749 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\temps.c
