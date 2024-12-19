@@ -117,7 +117,7 @@ char **definir_mode_jeu(int *lignes, int *colonnes, int *modeChoisi, int *diffic
         effacer_ecran();
         printf("\n=== Choisir le Mode de Jeu ===\n");
         printf("1. Jouer contre le Bot\n");
-        printf("2. Joueur contre Joueur\n");
+        printf("2. Joueur contre Joueur taille standard (6x7) 5sec/joueur\n");
         printf("3. Retourner au Menu Principal\n");
         printf("Entrez votre choix : \t");
         // Nettoyer le tampon avant de saisir un choix
@@ -142,20 +142,38 @@ char **definir_mode_jeu(int *lignes, int *colonnes, int *modeChoisi, int *diffic
                     break;
                 }
                 printf("Mode selectionne : Jouer contre le Bot\n");
-                printf("ligne de la grille: \t");
-                scanf("%d", lignes);
-                printf("\ncolone de la grille: \t");
-                scanf("%d", colonnes);
+                // printf("ligne de la grille: \t");
+                // scanf("%d", lignes);
+                // printf("\ncolone de la grille: \t");
+                // scanf("%d", colonnes);
+                // Setup de la grille
+                if (*difficulte == 1)
+                {
+                    *lignes = 6;
+                    *colonnes = 7;
+                }
+                else if (*difficulte == 2)
+                {
+                    *lignes = 9;
+                    *colonnes = 10;
+                }
+                else if (*difficulte == 3)
+                {
+                    *lignes = 14;
+                    *colonnes = 15;
+                }
                 grille = creationGrille(*lignes, *colonnes);
                 break;
             }
             else if (mode == '2')
             {
                 printf("Mode selectionne : Joueur contre Joueur\n");
-                printf("ligne de la grille: \t");
-                scanf("%d", lignes);
-                printf("\ncolone de la grille: \t");
-                scanf("%d", colonnes);
+                // printf("ligne de la grille: \t");
+                // scanf("%d", lignes);
+                // printf("\ncolone de la grille: \t");
+                // scanf("%d", colonnes);
+                *lignes = 6;
+                *colonnes = 7;
                 grille = creationGrille(*lignes, *colonnes);
                 break;
             }
@@ -201,7 +219,7 @@ char afficher_menu()
             printf("0. Pour continuer votre derniere partie\n");
         printf("1. Choisir le Mode de Jeu (vs Bot ou vs Joueur)\n");
         printf("2. Revoir une partie\n");
-        printf("3. Parametres\n");
+        printf("3. Parametres \n");
         printf("4. Aide\n");
         printf("5. Statistiques\n");
         printf("6. Quitter\n");

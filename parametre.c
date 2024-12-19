@@ -112,9 +112,9 @@ int niveauDificulte()
     effacer_ecran();
     char choix;
     printf("\n=== Niveau de difficultes ===\n");
-    printf("1. Facile\n");
-    printf("2. Intermediaire\n");
-    printf("3. Difficile\n");
+    printf("1. Facile (6x7) temps de jeu 10 sec/tour\n");
+    printf("2. Intermediaire (9x10) temps de jeu 6 sec/tour\n");
+    printf("3. Difficile (14x15) temps de jeu 3 sec/tour\n");
     printf("4. Retourner au menu principal\n");
 
     printf("Entrez votre choix : \t");

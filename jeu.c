@@ -1,12 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <limits.h>
+
 #include <time.h>
 #include "sauvegarde.h"
 #include "menu.h"
 #include "parametre.h"
+#include "temps.h"
 
+#ifdef _WIN32
+
+#else
+#include <limits.h>
+#endif
 char **creationGrille(int lignes, int colonnes)
 {
     char **grille = (char **)malloc(lignes * sizeof(char *));
@@ -60,6 +66,7 @@ void viderGrille(char **grille, int lignes, int colonnes)
 
 void afficherGrille(char **grille, int lignes, int colonnes)
 {
+    printf("\n");
     for (int i = 0; i < lignes; i++)
     {
         printf("|");
@@ -473,15 +480,41 @@ int jouer_ordinateur(char **grille, int lignes, int colonnes, int niveau, char p
     return -1; // Aucun coup valide n'est trouve
 }
 
-int jouer_tour_joueur(char **grille, int lignes, int colonnes, char pion, char *nomJoueur)
+int jouer_tour_joueur(char **grille, int lignes, int colonnes, char pion, char *nomJoueur, int difficulte)
 {
     afficherGrille(grille, lignes, colonnes);
     int colonne;
     int coup_valide = 0;
+
+    int timeout;
+    if (difficulte == 0)
+    {
+        timeout = 5000;
+    }
+    else if (difficulte == 1)
+    {
+        timeout = 10000;
+    }
+    else if (difficulte == 2)
+    {
+        timeout = 6000;
+    }
+    else if (difficulte == 3)
+    {
+        timeout = 3000;
+    }
+    // fflush(stdout);
+
     while (!coup_valide)
     {
-        printf("Votre tour (Joueur %s - Pion %c), choisissez une colonne (1 à %d) Ou 0 pour Sauvegarder la partie:  ", nomJoueur, pion, colonnes);
-        scanf("%d", &colonne);
+        printf("Temps de saisie %d secondes\n", timeout / 1000);
+        printf("Votre tour (Joueur %s - Pion %c) choisissez une colonne (1 à %d) Ou 0 pour Sauvegarder la partie:  ", nomJoueur, pion, colonnes);
+        // scanf("%d", &colonne);
+        int saisi = saisir_entier_avec_gestion_temps(timeout, &colonne);
+        if (!saisi)
+        {
+            return 0; // Retourne 0 pour indiquer un échec
+        }
         if (colonne == 0)
         {
             return 1;
@@ -526,7 +559,7 @@ void partie_ordi(char **grille, int lignes, int colonnes, char *joueur1, char *j
         //;
         effacer_ecran();
         int quitter = 0;
-        while (jouer_tour_joueur(grille, lignes, colonnes, pion1, joueur1) == 1)
+        while (jouer_tour_joueur(grille, lignes, colonnes, pion1, joueur1, difficulte) == 1)
         {
             // effacer_ecran();
             int tmp = sauvegardeMenu();
@@ -613,7 +646,7 @@ void partie_joueur(char **grille, int lignes, int colonnes, char *joueur1, char 
             *startedPion = pion2;
         }
 
-        while (jouer_tour_joueur(grille, lignes, colonnes, *startedPion, startedJoueur) == 1)
+        while (jouer_tour_joueur(grille, lignes, colonnes, *startedPion, startedJoueur, difficulte) == 1)
         {
             // effacer_ecran();
             int tmp = sauvegardeMenu();
@@ -644,12 +677,13 @@ void partie_joueur(char **grille, int lignes, int colonnes, char *joueur1, char 
             lancer_jeu();
             break;
         }
+        printf("\n");
         afficherGrille(grille, lignes, colonnes);
 
         int victoire_joueur = verifier_victoire(grille, lignes, colonnes, *startedPion);
         if (victoire_joueur == 1)
         {
-            afficher_succes("Vous avez gagne lar partie\n");
+            afficher_succes("Vous avez gagne la partie\n");
             jeu_en_cours = 0;
             break;
         }
