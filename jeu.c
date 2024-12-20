@@ -186,7 +186,7 @@ char choisirPion(char *nomJoueur, char pionchoisi)
     if (pionchoisi != '\0' && pionchoisi == pion)
     {
         afficher_erreur("Ce pion est deja choisi par l'autre joueur");
-        choisirPion(nomJoueur, pionchoisi == '\0' ? '\0' : pionchoisi);
+        return choisirPion(nomJoueur, pionchoisi == '\0' ? '\0' : pionchoisi);
     }
     printf("Votre pion : %c\n", pion);
     return pion;
@@ -804,7 +804,7 @@ void partie_joueur(char **grille, int lignes, int colonnes, char *joueur1, char 
         if (victoire_joueur == 1)
         {
             afficher_succes("Vous avez gagne la partie\n");
-            printf("diffucultes %d\n", difficulte);
+            // printf("diffucultes %d\n", difficulte);
 
             if (strcmp(startedJoueur, joueur1) == 0)
             {
