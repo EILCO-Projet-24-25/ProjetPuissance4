@@ -79,11 +79,12 @@ void afficerAide()
 
     printf("\nNiveaux de difficulte :\n");
     printf("1. Niveau Facile :\n");
-    printf("   - L'ordinateur joue aleatoirement, sans strategie particuliere.\n");
+    printf("   - L'ordinateur joue aleatoirement, sans strategie particuliere. Taille (6x7) temps de jeu 10 sec/tour.\n");
     printf("2. Niveau Moyen :\n");
-    printf("   - L'ordinateur tente de bloquer vos coups gagnants.\n");
+    printf("   - L'ordinateur tente de bloquer vos coups gagnants Taille .\n");
     printf("3. Niveau Difficile :\n");
     printf("   - L'ordinateur analyse la grille pour faire le meilleur choix possible et essayer de gagner a tout prix.\n");
+    printf("   Taille  (14x15) temps de jeu 3 sec/tour\n");
 
     printf("\nConseils :\n");
     printf("- Essayez de planifier vos coups a l'avance pour creer plusieurs alignements possibles.\n");

@@ -674,6 +674,21 @@ void partie_ordi(char **grille, int lignes, int colonnes, char *joueur1, char *j
         if (victoire_joueur == 1)
         {
             afficher_succes("Le joueur a gagne\n");
+            if (difficulte == 1)
+            {
+                update_statistics(joueur1, 1, 50);
+                update_statistics(joueur2, 0, 10);
+            }
+            else if (difficulte == 2)
+            {
+                update_statistics(joueur1, 1, 100);
+                update_statistics(joueur2, 0, 10);
+            }
+            else if (difficulte == 3)
+            {
+                update_statistics(joueur1, 1, 150);
+                update_statistics(joueur2, 0, 10);
+            }
             jeu_en_cours = 0;
             break;
         }
@@ -696,6 +711,22 @@ void partie_ordi(char **grille, int lignes, int colonnes, char *joueur1, char *j
         if (victoire_ordi == 1)
         {
             afficher_succes("L'Ordi a gagne\n");
+
+            if (difficulte == 1)
+            {
+                update_statistics(joueur2, 1, 50);
+                update_statistics(joueur1, 0, 10);
+            }
+            else if (difficulte == 2)
+            {
+                update_statistics(joueur2, 1, 100);
+                update_statistics(joueur1, 0, 10);
+            }
+            else if (difficulte == 3)
+            {
+                update_statistics(joueur2, 1, 150);
+                update_statistics(joueur1, 0, 10);
+            }
             jeu_en_cours = 0;
             break;
         }
@@ -773,6 +804,21 @@ void partie_joueur(char **grille, int lignes, int colonnes, char *joueur1, char 
         if (victoire_joueur == 1)
         {
             afficher_succes("Vous avez gagne la partie\n");
+            printf("diffucultes %d\n", difficulte);
+
+            if (strcmp(startedJoueur, joueur1) == 0)
+            {
+                update_statistics(startedJoueur, 1, 50);
+                update_statistics(joueur2, 0, 10);
+            }
+            else if (strcmp(startedJoueur, joueur2) == 0)
+            {
+                {
+                    update_statistics(startedJoueur, 1, 50);
+                    update_statistics(joueur1, 0, 10);
+                }
+            }
+
             jeu_en_cours = 0;
             break;
         }
@@ -868,7 +914,7 @@ void lancer_jeu()
             difficulte = 0;
             partie_joueur(grille, lignes, colonnes, joueur1, joueur2, difficulte, modeChoisi, choix, pion1, pion2, &startedPion, startedJoueur, &tour);
         }
-        if (choix == 6)
+        if (choix == 5)
         {
             libererGrille(grille, lignes);
             free(joueur1);

@@ -5,6 +5,7 @@
 #include "parametre.h"
 #include "sauvegarde.h"
 #include "menu.h"
+#include "temps.h"
 
 int sauvegardeMenu()
 {
@@ -219,10 +220,10 @@ char afficher_menu()
             printf("0. Pour continuer votre derniere partie\n");
         printf("1. Choisir le Mode de Jeu (vs Bot ou vs Joueur)\n");
         printf("2. Revoir une partie\n");
-        printf("3. Parametres \n");
-        printf("4. Aide\n");
-        printf("5. Statistiques\n");
-        printf("6. Quitter\n");
+        // printf("3. Parametres \n");
+        printf("3. Aide\n");
+        printf("4. Statistiques\n");
+        printf("5. Quitter\n");
 
         printf("Entrez votre choix : \t");
         scanf("%c", &choix);
@@ -241,18 +242,20 @@ char afficher_menu()
             case '2':
                 printf("Revoir une partie\n");
                 break;
+            // case '3':
+            //     printf("Parametres\n");
+            //     break;
             case '3':
-                printf("Parametres\n");
-                break;
-            case '4':
                 printf("Aide\n");
                 afficerAide();
                 break;
-            case '5':
+            case '4':
                 printf("Statistiques\n");
+                 display_statistics();
                 break;
-            case '6':
+            case '5':
                 printf("Quitter le jeu\n");
+                quitterJeu();
                 break;
             default:
                 afficher_erreur("\nEntree non valide. Veuillez entrer un chiffre entre 1-6.\n");

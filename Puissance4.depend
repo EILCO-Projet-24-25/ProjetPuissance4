@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1733699511 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\main.c
+1734699486 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\main.c
 	<stdio.h>
 	<stdlib.h>
 	"menu.h"
@@ -1395,7 +1395,7 @@
 	"begin_code.h"
 	"close_code.h"
 
-1734618009 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\menu.c
+1734700776 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\menu.c
 	<stdio.h>
 	<ctype.h>
 	<stdlib.h>
@@ -1403,10 +1403,11 @@
 	"parametre.h"
 	"sauvegarde.h"
 	"menu.h"
+	"temps.h"
 
 1734199939 c:\users\hp laptop\documents\ing1\algo\projetpuissance4\menu.h
 
-1734638314 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\jeu.c
+1734700416 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\jeu.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -1481,15 +1482,18 @@
 	<stdlib.h>
 	"jeu.h"
 
-1734336756 c:\users\hp laptop\documents\ing1\algo\projetpuissance4\temps.h
+1734700747 c:\users\hp laptop\documents\ing1\algo\projetpuissance4\temps.h
 
-1734336749 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\temps.c
+1734701197 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\temps.c
 	<stdio.h>
 	<stdlib.h>
 	<time.h>
 	<ctype.h>
 	<string.h>
 	<limits.h>
+	<errno.h>
+	"parametre.h"
+	"jeu.h"
 	<conio.h>
 	<windows.h>
 	<sys/time.h>
