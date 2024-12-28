@@ -263,7 +263,7 @@ char afficher_menu()
                 // while (getchar() != '\n')
                 //     ;
                 // getchar();
-                afficher_menu();
+                return afficher_menu();
                 break;
             }
         }
