@@ -164,7 +164,7 @@ void saisieNomJoueur(char *joueur1, char *joueur2, int choix)
 {
     // printf("Choix %d\n", choix);
     int err = 0;
-    vider_tampon();
+    vider_tampon(); 
     do
     {
         err = 0;
