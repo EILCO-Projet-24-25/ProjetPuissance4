@@ -882,6 +882,7 @@ void lancer_jeu()
                 // printf("Mode de jeu %d\n", modeChoisi);
                 saisieNomJoueur(joueur1, joueur2, modeChoisi);
                 strcpy(nompartie, creerPartie(joueur1, joueur2));
+                sauvegarde(nompartie, grille, lignes, colonnes, joueur1, joueur2, pion1, pion2);
                 // test affichage
                 //  printf("Joueur 1 %s\n", joueur1);
                 //  printf("Joueur 2 %s\n", joueur2);
@@ -894,6 +895,7 @@ void lancer_jeu()
             {
                 saisieNomJoueur(joueur1, joueur2, modeChoisi);
                 strcpy(nompartie, creerPartie(joueur1, joueur2));
+                sauvegarde(nompartie, grille, lignes, colonnes, joueur1, joueur2, pion1, pion2);
                 printf("Joueur 1 %s\n", joueur1);
                 printf("Joueur 2 %s\n", joueur2);
                 printf("Choix des pions, le joueur %s commencera la partie en 1ere\n", tour == 1 ? joueur1 : joueur2);

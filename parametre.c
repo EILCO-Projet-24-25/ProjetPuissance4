@@ -6,14 +6,6 @@
 #include "menu.h"
 #include "jeu.h"
 
-#ifdef _WIN32
-#include <windows.h>
-#else
-#include <X11/Xlib.h>
-#include <X11/keysym.h>
-#include <unistd.h>
-#endif
-
 void quitterJeu()
 {
     printf("Aurevoir....... :)\n");
@@ -44,12 +36,15 @@ void afficher_succes(const char *message)
     printf("\033[0m"); // Reinitialisation de la couleur
 }
 
-int continuerJeu(char *message)
+int continuerJeu(char *message, int test)
 {
     char choix;
     printf("%s\n", message);
-    while (getchar() != '\n')
-        ;
+    if (test == 1)
+    {
+        while (getchar() != '\n')
+            ;
+    }
     scanf("%c", &choix);
     if (isdigit(choix))
     {
@@ -61,14 +56,14 @@ int continuerJeu(char *message)
             break;
         default:
             afficher_erreur("\nEntree non valide. Veuillez entrer un chiffre entre 1 et 0.\n");
-            continuerJeu(message);
+            return continuerJeu(message, test);
             break;
         }
     }
     else
     {
         afficher_erreur("\nEntree non valide. Veuillez entrer un chiffre entre 1 et 0.\n");
-        return continuerJeu(message);
+        return continuerJeu(message, test);
     }
     return choix;
 }
@@ -105,7 +100,7 @@ void afficerAide()
 
     printf("\nAmusez-vous bien et bonne chance !\n\n");
 
-    if (continuerJeu("Retourner sur le menu? Saisir 1 Pour Oui 0 Pour quitter le jeu....") == 49)
+    if (continuerJeu("Retourner sur le menu? Saisir 1 Pour Oui 0 Pour quitter le jeu....", 1) == 49)
     {
         effacer_ecran();
         lancer_jeu();
@@ -370,81 +365,15 @@ int replayPartie(const char *nomFichier)
             // Attendre une action utilisateur pour continuer
             printf("Appuyez sur Entree pour continuer...");
             getchar(); // Pour capturer le '\n' restant
-            getchar(); // Attendre l'Entree
+            // getchar(); // Attendre l'Entree
+            printf("\n");
         }
     }
 
     // Liberer la memoire allouee pour la grille
     libererGrille(grille, lignes);
     fclose(f);
-#ifdef _WIN32
-    // Préparer les événements de pression et de relâchement de la touche Entrée
-    INPUT inputs[2] = {0};
-
-    // Pression de la touche Entrée
-    inputs[0].type = INPUT_KEYBOARD;
-    inputs[0].ki.wVk = VK_RETURN; // Code virtuel pour la touche Entrée
-    inputs[0].ki.dwFlags = 0;     // Pression de la touche
-
-    // Relâchement de la touche Entrée
-    inputs[1].type = INPUT_KEYBOARD;
-    inputs[1].ki.wVk = VK_RETURN;           // Code virtuel pour la touche Entrée
-    inputs[1].ki.dwFlags = KEYEVENTF_KEYUP; // Relâchement de la touche
-
-    // Envoyer les événements
-    UINT uSent = SendInput(2, inputs, sizeof(INPUT));
-    if (uSent != 2)
-    {
-        printf("Erreur lors de l'envoi des événements de clavier. Erreur : %lu\n", GetLastError());
-        return 1;
-    }
-
-#else
-    // Code pour Linux (X11)
-    Display *display;
-    Window root;
-    XEvent event;
-    int screen;
-
-    // Ouvrir une connexion avec le serveur X
-    display = XOpenDisplay(NULL);
-    if (display == NULL)
-    {
-        fprintf(stderr, "Impossible d'ouvrir le serveur X.\n");
-        return 1;
-    }
-
-    screen = DefaultScreen(display);
-    root = RootWindow(display, screen);
-
-    // Fonction pour simuler une pression ou un relâchement de touche
-    void send_key_event(int keycode, Bool is_press)
-    {
-        memset(&event, 0, sizeof(event));
-        event.type = is_press ? KeyPress : KeyRelease;
-        event.xkey.display = display;
-        event.xkey.window = root;
-        event.xkey.root = root;
-        event.xkey.keycode = keycode;
-        event.xkey.state = 0;
-        XSendEvent(display, root, True, KeyPressMask | KeyReleaseMask, &event);
-        XFlush(display);
-    }
-
-    // Obtenir le code de la touche Entrée
-    KeySym keysym = XK_Return;
-    int keycode = XKeysymToKeycode(display, keysym);
-
-    // Simuler la pression de la touche Entrée
-    send_key_event(keycode, True);
-    usleep(100000); // Pause de 100ms
-    send_key_event(keycode, False);
-
-    // Fermer la connexion avec le serveur X
-    XCloseDisplay(display);
-#endif
-
-    if (continuerJeu("Retourner sur le menu? Saisir 1 Pour Oui 0 Pour quitter le jeu....") == 49)
+    if (continuerJeu("Retourner sur le menu? Saisir 1 Pour Oui 0 Pour quitter le jeu....", 0) == 49)
     {
         effacer_ecran();
         lancer_jeu();

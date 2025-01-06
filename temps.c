@@ -416,12 +416,14 @@ void update_statistics(char *player_name, int victory, int points)
     fflush(stdout);
 }
 
-void display_statistics() {
+void display_statistics()
+{
     printf("=== Affichage des Statistiques des Joueurs ===\n");
     fflush(stdout);
 
     FILE *fp_read = fopen("statistique.txt", "r");
-    if (fp_read == NULL) {
+    if (fp_read == NULL)
+    {
         printf("Aucune statistique trouvee. Le fichier 'statistique.txt' n'existe pas.\n");
         return;
     }
@@ -434,53 +436,66 @@ void display_statistics() {
     int *defeats = malloc(capacity * sizeof(int));
     int *points = malloc(capacity * sizeof(int));
 
-    if (names == NULL || victories == NULL || defeats == NULL || points == NULL) {
+    if (names == NULL || victories == NULL || defeats == NULL || points == NULL)
+    {
         fprintf(stderr, "Erreur : Impossible d'allouer la memoire pour les donnees.\n");
-        if (names) free(names);
-        if (victories) free(victories);
-        if (defeats) free(defeats);
-        if (points) free(points);
+        if (names)
+            free(names);
+        if (victories)
+            free(victories);
+        if (defeats)
+            free(defeats);
+        if (points)
+            free(points);
         fclose(fp_read);
         return;
     }
 
     char ligne[256];
-    while (fgets(ligne, sizeof(ligne), fp_read)) {
+    while (fgets(ligne, sizeof(ligne), fp_read))
+    {
         char nom[100];
         int victoires_temp, defaites_temp, pts;
 
         // Parser la ligne
         char *token = strtok(ligne, ",");
-        if (token == NULL) continue;
+        if (token == NULL)
+            continue;
         strncpy(nom, token, sizeof(nom) - 1);
         nom[sizeof(nom) - 1] = '\0';
 
         // Lire les victoires
         token = strtok(NULL, ",");
-        if (token == NULL) continue;
+        if (token == NULL)
+            continue;
         victoires_temp = atoi(token);
 
         // Lire les defaites
         token = strtok(NULL, ",");
-        if (token == NULL) continue;
+        if (token == NULL)
+            continue;
         defaites_temp = atoi(token);
 
         // Lire les points
         token = strtok(NULL, ",");
-        if (token == NULL) continue;
+        if (token == NULL)
+            continue;
         pts = atoi(token);
 
         // Ajouter au tableau
-        if (count >= capacity) {
+        if (count >= capacity)
+        {
             capacity *= 2;
             char **temp_names = realloc(names, capacity * sizeof(char *));
             int *temp_victories = realloc(victories, capacity * sizeof(int));
             int *temp_defeats = realloc(defeats, capacity * sizeof(int));
             int *temp_points = realloc(points, capacity * sizeof(int));
-            if (temp_names == NULL || temp_victories == NULL || temp_defeats == NULL || temp_points == NULL) {
+            if (temp_names == NULL || temp_victories == NULL || temp_defeats == NULL || temp_points == NULL)
+            {
                 fprintf(stderr, "Erreur : Impossible de reallouer la memoire pour les donnees.\n");
                 // Liberer tout
-                for (int i = 0; i < count; i++) {
+                for (int i = 0; i < count; i++)
+                {
                     free(names[i]);
                 }
                 free(names);
@@ -497,18 +512,22 @@ void display_statistics() {
         }
 
         // Remplacer les underscores par des espaces pour l'affichage
-        for (int i = 0; nom[i] != '\0'; i++) {
-            if (nom[i] == '_') {
+        for (int i = 0; nom[i] != '\0'; i++)
+        {
+            if (nom[i] == '_')
+            {
                 nom[i] = ' ';
             }
         }
 
         // Allouer et copier le nom
         names[count] = malloc(strlen(nom) + 1);
-        if (names[count] == NULL) {
+        if (names[count] == NULL)
+        {
             fprintf(stderr, "Erreur : Impossible d'allouer la memoire pour le nom.\n");
             // Liberer tout
-            for (int i = 0; i < count; i++) {
+            for (int i = 0; i < count; i++)
+            {
                 free(names[i]);
             }
             free(names);
@@ -527,7 +546,8 @@ void display_statistics() {
 
     fclose(fp_read);
 
-    if (count == 0) {
+    if (count == 0)
+    {
         printf("Aucune statistique trouvee dans le fichier 'statistique.txt'.\n");
         free(names);
         free(victories);
@@ -537,9 +557,12 @@ void display_statistics() {
     }
 
     // Trier les joueurs par points decroissants (Bubble sort)
-    for (int i = 0; i < count - 1; i++) {
-        for (int j = 0; j < count - i - 1; j++) {
-            if (points[j] < points[j + 1]) {
+    for (int i = 0; i < count - 1; i++)
+    {
+        for (int j = 0; j < count - i - 1; j++)
+        {
+            if (points[j] < points[j + 1])
+            {
                 // echanger points
                 int temp_pt = points[j];
                 points[j] = points[j + 1];
@@ -568,15 +591,18 @@ void display_statistics() {
     printf("------------------------------------------------------------------\n");
 
     int rank = 1;
-    for (int i = 0; i < count; i++) {
-        if (i > 0 && points[i] < points[i - 1]) {
+    for (int i = 0; i < count; i++)
+    {
+        if (i > 0 && points[i] < points[i - 1])
+        {
             rank = i + 1;
         }
         printf("%-5d %-25s %-10d %-10d %-10d\n", rank, names[i], victories[i], defeats[i], points[i]);
     }
 
     // Liberer la memoire
-    for (int i = 0; i < count; i++) {
+    for (int i = 0; i < count; i++)
+    {
         free(names[i]);
     }
     free(names);
@@ -586,8 +612,7 @@ void display_statistics() {
 
     fflush(stdout);
 
-
-    if (continuerJeu("Retourner sur le menu? Saisir 1 Pour Oui 0 Pour quitter le jeu....") == 49)
+    if (continuerJeu("Retourner sur le menu? Saisir 1 Pour Oui 0 Pour quitter le jeu....", 1) == 49)
     {
         effacer_ecran();
         lancer_jeu();
