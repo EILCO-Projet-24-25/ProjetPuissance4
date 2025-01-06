@@ -66,6 +66,7 @@
     "string.h": "c",
     "cstdlib": "c",
     "sauvegarde.h": "c",
-    "time.h": "c"
+    "time.h": "c",
+    "parametre.h": "c"
   }
 }

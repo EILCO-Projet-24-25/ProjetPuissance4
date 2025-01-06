@@ -97,14 +97,14 @@ void afficherGrille(char **grille, int lignes, int colonnes)
             {
                 if (pion1 == '\0')
                 {
-                    pion1 = c; // Premier symbole détecté
+                    pion1 = c; // Premier symbole detecte
                 }
                 else if (pion2 == '\0')
                 {
-                    pion2 = c; // Second symbole détecté
+                    pion2 = c; // Second symbole detecte
                 }
             }
-            // Si les deux symboles sont déjà trouvés, arrêter la recherche
+            // Si les deux symboles sont dejà trouves, arrêter la recherche
             if (pion1 != '\0' && pion2 != '\0')
                 break;
         }
@@ -112,13 +112,13 @@ void afficherGrille(char **grille, int lignes, int colonnes)
             break;
     }
 
-    // Si un seul symbole est présent, assigner le même symbole au deuxième pour éviter les erreurs
+    // Si un seul symbole est present, assigner le même symbole au deuxième pour eviter les erreurs
     if (pion2 == '\0' && pion1 != '\0')
     {
         pion2 = pion1;
     }
 
-    // Trier les symboles pour une assignation cohérente des couleurs
+    // Trier les symboles pour une assignation coherente des couleurs
     // Par exemple, pion1 < pion2 en ordre ASCII
     if (pion1 > pion2 && pion2 != '\0')
     {
@@ -153,7 +153,7 @@ void afficherGrille(char **grille, int lignes, int colonnes)
             }
         }
         printf("\n");
-        // Afficher les lignes de séparation
+        // Afficher les lignes de separation
         for (int k = 0; k < colonnes; k++)
         {
             printf("----");
@@ -628,7 +628,7 @@ int random_1_2()
     return (rand() % 2) + 1; // Genère un nombre entre 1 et 2
 }
 
-void partie_ordi(char **grille, int lignes, int colonnes, char *joueur1, char *joueur2, int difficulte, int modeChoisi, int choix, char pion1, char pion2)
+void partie_ordi(char **grille, int lignes, int colonnes, char *joueur1, char *joueur2, int difficulte, int modeChoisi, int choix, char pion1, char pion2, char *nomPartie)
 {
     int jeu_en_cours = 1;
     while (jeu_en_cours)
@@ -644,7 +644,7 @@ void partie_ordi(char **grille, int lignes, int colonnes, char *joueur1, char *j
             if (tmp == 1)
             {
                 // Quitter et sauvegarder
-                sauvegarderJeu(grille, lignes, colonnes, "savegarde.txt", joueur1, joueur2, difficulte, modeChoisi, choix, pion1, pion2);
+                sauvegarderJeu(grille, lignes, colonnes, "savegarde.txt", joueur1, joueur2, difficulte, modeChoisi, choix, pion1, pion2, nomPartie);
                 // effacer_ecran();
                 free(grille);
                 free(joueur1);
@@ -669,7 +669,7 @@ void partie_ordi(char **grille, int lignes, int colonnes, char *joueur1, char *j
             break;
         }
         afficherGrille(grille, lignes, colonnes);
-
+        sauvegarde(nomPartie, grille, lignes, colonnes, joueur1, joueur2, pion1, pion2);
         int victoire_joueur = verifier_victoire(grille, lignes, colonnes, pion1);
         if (victoire_joueur == 1)
         {
@@ -699,7 +699,7 @@ void partie_ordi(char **grille, int lignes, int colonnes, char *joueur1, char *j
         int colonne_ordi = jouer_ordinateur(grille, lignes, colonnes, difficulte, pion1, pion2);
         printf("L'ordinateur a joue en colonne %d\n", colonne_ordi + 1);
         afficherGrille(grille, lignes, colonnes);
-
+        sauvegarde(nomPartie, grille, lignes, colonnes, joueur1, joueur2, pion1, pion2);
         // Condition de victoire ou de grille pleine ici...
         if (estGrillePleine(grille, lignes, colonnes) == 1)
         {
@@ -737,10 +737,11 @@ void partie_ordi(char **grille, int lignes, int colonnes, char *joueur1, char *j
     {
         effacer_ecran();
         viderGrille(grille, lignes, colonnes);
-        partie_ordi(grille, lignes, colonnes, joueur1, joueur2, difficulte, modeChoisi, choix, pion1, pion2);
+        nomPartie = creerPartie(joueur1, joueur2);
+        partie_ordi(grille, lignes, colonnes, joueur1, joueur2, difficulte, modeChoisi, choix, pion1, pion2, nomPartie);
     }
 }
-void partie_joueur(char **grille, int lignes, int colonnes, char *joueur1, char *joueur2, int difficulte, int modeChoisi, int choix, char pion1, char pion2, char *startedPion, char *startedJoueur, int *tour)
+void partie_joueur(char **grille, int lignes, int colonnes, char *joueur1, char *joueur2, int difficulte, int modeChoisi, int choix, char pion1, char pion2, char *startedPion, char *startedJoueur, int *tour, char *nomPartie)
 {
     int jeu_en_cours = 1;
 
@@ -768,7 +769,7 @@ void partie_joueur(char **grille, int lignes, int colonnes, char *joueur1, char 
             if (tmp == 1)
             {
                 // Quitter et sauvegarder
-                sauvegarderJeu(grille, lignes, colonnes, "savegarde.txt", joueur1, joueur2, *tour, modeChoisi, choix, pion1, pion2);
+                sauvegarderJeu(grille, lignes, colonnes, "savegarde.txt", joueur1, joueur2, *tour, modeChoisi, choix, pion1, pion2, nomPartie);
                 // effacer_ecran();
                 free(grille);
                 free(joueur1);
@@ -794,6 +795,7 @@ void partie_joueur(char **grille, int lignes, int colonnes, char *joueur1, char 
         }
         printf("\n");
         afficherGrille(grille, lignes, colonnes);
+        sauvegarde(nomPartie, grille, lignes, colonnes, joueur1, joueur2, pion1, pion2);
         if (estGrillePleine(grille, lignes, colonnes) == 1)
         {
             afficher_erreur("La grille est pleine. Match nul.\n");
@@ -831,7 +833,8 @@ void partie_joueur(char **grille, int lignes, int colonnes, char *joueur1, char 
         effacer_ecran();
         viderGrille(grille, lignes, colonnes);
         *tour = (*tour % 2) + 1;
-        partie_joueur(grille, lignes, colonnes, joueur1, joueur2, difficulte, modeChoisi, choix, pion1, pion2, startedPion, startedJoueur, tour);
+        nomPartie = creerPartie(joueur1, joueur2);
+        partie_joueur(grille, lignes, colonnes, joueur1, joueur2, difficulte, modeChoisi, choix, pion1, pion2, startedPion, startedJoueur, tour, nomPartie);
     }
 }
 
@@ -846,13 +849,14 @@ void lancer_jeu()
     int tour = random_1_2();
     char *startedJoueur = (char *)malloc(12 * sizeof(char));
     char startedPion;
+    char *nompartie = (char *)malloc(50 * sizeof(char));
 
     // printf("Choix %d\n", choix);
     int oldChoice = 1;
     if (choix == 0)
     {
         oldChoice = choix;
-        grille = chargerJeu(&lignes, &colonnes, &difficulte, &modeChoisi, &choix, "savegarde.txt", joueur1, joueur2, &pion1, &pion2);
+        grille = chargerJeu(&lignes, &colonnes, &difficulte, &modeChoisi, &choix, "savegarde.txt", joueur1, joueur2, &pion1, &pion2, nompartie);
         remove("savegarde.txt");
         afficherGrille(grille, lignes, colonnes);
         if (modeChoisi == 2)
@@ -877,6 +881,7 @@ void lancer_jeu()
             {
                 // printf("Mode de jeu %d\n", modeChoisi);
                 saisieNomJoueur(joueur1, joueur2, modeChoisi);
+                strcpy(nompartie, creerPartie(joueur1, joueur2));
                 // test affichage
                 //  printf("Joueur 1 %s\n", joueur1);
                 //  printf("Joueur 2 %s\n", joueur2);
@@ -888,6 +893,7 @@ void lancer_jeu()
             else if (modeChoisi == 2)
             {
                 saisieNomJoueur(joueur1, joueur2, modeChoisi);
+                strcpy(nompartie, creerPartie(joueur1, joueur2));
                 printf("Joueur 1 %s\n", joueur1);
                 printf("Joueur 2 %s\n", joueur2);
                 printf("Choix des pions, le joueur %s commencera la partie en 1ere\n", tour == 1 ? joueur1 : joueur2);
@@ -905,14 +911,14 @@ void lancer_jeu()
         }
         if (modeChoisi == 1)
         {
-            partie_ordi(grille, lignes, colonnes, joueur1, joueur2, difficulte, modeChoisi, choix, pion1, pion2);
+            partie_ordi(grille, lignes, colonnes, joueur1, joueur2, difficulte, modeChoisi, choix, pion1, pion2, nompartie);
         }
 
         else if (modeChoisi == 2)
         {
             // Jeu contre un autre joueur
             difficulte = 0;
-            partie_joueur(grille, lignes, colonnes, joueur1, joueur2, difficulte, modeChoisi, choix, pion1, pion2, &startedPion, startedJoueur, &tour);
+            partie_joueur(grille, lignes, colonnes, joueur1, joueur2, difficulte, modeChoisi, choix, pion1, pion2, &startedPion, startedJoueur, &tour, nompartie);
         }
         if (choix == 5)
         {

@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1734699486 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\main.c
+1736029936 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\main.c
 	<stdio.h>
 	<stdlib.h>
 	"menu.h"
@@ -1395,19 +1395,20 @@
 	"begin_code.h"
 	"close_code.h"
 
-1734700776 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\menu.c
+1736155508 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\menu.c
 	<stdio.h>
 	<ctype.h>
 	<stdlib.h>
+	<string.h>
 	"jeu.h"
 	"parametre.h"
 	"sauvegarde.h"
 	"menu.h"
 	"temps.h"
 
-1734199939 c:\users\hp laptop\documents\ing1\algo\projetpuissance4\menu.h
+1736118321 c:\users\hp laptop\documents\ing1\algo\projetpuissance4\menu.h
 
-1734700416 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\jeu.c
+1736155508 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\jeu.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -1419,18 +1420,22 @@
 	"jeu.h"
 	<limits.h>
 
-1734638221 c:\users\hp laptop\documents\ing1\algo\projetpuissance4\jeu.h
+1736115817 c:\users\hp laptop\documents\ing1\algo\projetpuissance4\jeu.h
 
 1730993202 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\puissance.c
 
-1733770601 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\sauvegarde.c
+1736155508 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\sauvegarde.c
 	<stdio.h>
 	<stdlib.h>
+	<time.h>
 	"jeu.h"
+	<sys/stat.h>
+	<direct.h>
+	<sys/types.h>
 
-1733698861 c:\users\hp laptop\documents\ing1\algo\projetpuissance4\parametre.h
+1736118995 c:\users\hp laptop\documents\ing1\algo\projetpuissance4\parametre.h
 
-1734701374 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\parametre.c
+1736159228 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\parametre.c
 	<stdlib.h>
 	<stdio.h>
 	<ctype.h>
@@ -1438,8 +1443,12 @@
 	<strings.h>
 	"menu.h"
 	"jeu.h"
+	<windows.h>
+	<X11/Xlib.h>
+	<X11/keysym.h>
+	<unistd.h>
 
-1733770319 c:\users\hp laptop\documents\ing1\algo\projetpuissance4\sauvegarde.h
+1736117014 c:\users\hp laptop\documents\ing1\algo\projetpuissance4\sauvegarde.h
 
 1734334808 source:/home/celsia/workspace_c/ProjetPuissance4/main.c
 	<stdio.h>
@@ -1484,7 +1493,7 @@
 
 1734700747 c:\users\hp laptop\documents\ing1\algo\projetpuissance4\temps.h
 
-1734701197 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\temps.c
+1736155508 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\temps.c
 	<stdio.h>
 	<stdlib.h>
 	<time.h>

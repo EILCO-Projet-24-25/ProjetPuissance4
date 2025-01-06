@@ -1,11 +1,135 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <stdlib.h>
+#include <string.h>
 #include "jeu.h"
 #include "parametre.h"
 #include "sauvegarde.h"
 #include "menu.h"
 #include "temps.h"
+
+#define MAX_PARTIE_NAME 256
+#define MAX_PARTIES 100
+
+char *listesParties()
+{
+    // Chemin du fichier parties.txt
+    const char *cheminParties = "parties/parties.txt";
+
+    // Ouvrir le fichier en mode lecture
+    FILE *f = fopen(cheminParties, "r");
+    if (f == NULL)
+    {
+        fprintf(stderr, "Erreur : Impossible d'ouvrir le fichier %s.\n", cheminParties);
+        return NULL;
+    }
+
+    // Tableau pour stocker les noms des parties
+    char *parties[MAX_PARTIES];
+    int compteur = 0;
+    char buffer[MAX_PARTIE_NAME];
+
+    // Lire chaque ligne du fichier et stocker dans le tableau
+    while (fgets(buffer, sizeof(buffer), f) != NULL && compteur < MAX_PARTIES)
+    {
+        // Supprimer le caractère de nouvelle ligne '\n' si present
+        buffer[strcspn(buffer, "\r\n")] = 0;
+
+        // Allouer de la memoire pour le nom de la partie et le copier
+        parties[compteur] = malloc(strlen(buffer) + 1);
+        if (parties[compteur] == NULL)
+        {
+            fprintf(stderr, "Erreur : Allocation memoire echouee.\n");
+            // Liberer les parties dejà allouees
+            for (int i = 0; i < compteur; i++)
+            {
+                free(parties[i]);
+            }
+            fclose(f);
+            return NULL;
+        }
+        strcpy(parties[compteur], buffer);
+        compteur++;
+    }
+
+    fclose(f);
+
+    if (compteur == 0)
+    {
+        printf("Aucune partie sauvegardee trouvee.\n");
+        return NULL;
+    }
+
+    // Afficher le menu des parties
+    printf("=== Liste des Parties Sauvegardees ===\n");
+    for (int i = 0; i < compteur; i++)
+    {
+        printf("%d. %s\n", i + 1, parties[i]);
+    }
+    printf("0. Quitter\n");
+
+    // Demander à l'utilisateur de selectionner une partie
+    int choix;
+    printf("Entrez le numero de la partie a afficher (0 pour Aller au menu) : ");
+    if (scanf("%d", &choix) != 1)
+    {
+        fprintf(stderr, "Erreur : Entree invalide.\n");
+        // Liberer la memoire allouee
+        for (int i = 0; i < compteur; i++)
+        {
+            free(parties[i]);
+        }
+        return NULL;
+    }
+
+    // Valider le choix de l'utilisateur
+    if (choix < 0 || choix > compteur)
+    {
+        fprintf(stderr, "Erreur : Choix invalide.\n");
+        // Liberer la memoire allouee
+        for (int i = 0; i < compteur; i++)
+        {
+            free(parties[i]);
+        }
+        return NULL;
+    }
+
+    if (choix == 0)
+    {
+        // Liberer la memoire allouee
+        for (int i = 0; i < compteur; i++)
+        {
+            free(parties[i]);
+        }
+        effacer_ecran();
+        lancer_jeu();
+        return NULL;
+    }
+
+    // Recuperer le nom de la partie selectionnee
+    char *nomPartieSelectionnee = malloc(strlen(parties[choix - 1]) + 1);
+    if (nomPartieSelectionnee == NULL)
+    {
+        fprintf(stderr, "Erreur : Allocation memoire echouee.\n");
+        // Liberer la memoire allouee
+        for (int i = 0; i < compteur; i++)
+        {
+            free(parties[i]);
+        }
+        return NULL;
+    }
+    strcpy(nomPartieSelectionnee, parties[choix - 1]);
+
+    // Liberer la memoire allouee pour les autres parties
+    for (int i = 0; i < compteur; i++)
+    {
+        free(parties[i]);
+    }
+
+    printf("Partie selectionnee : %s\n", nomPartieSelectionnee);
+
+    return nomPartieSelectionnee;
+}
 
 int sauvegardeMenu()
 {
@@ -240,7 +364,14 @@ char afficher_menu()
                 printf("Choix du mode de jeu\n");
                 break;
             case '2':
-                printf("Revoir une partie\n");
+                effacer_ecran();
+                char *partieselectionnee = listesParties();
+                // strcpy(partieselectionnee,listesParties());
+                if (replayPartie(partieselectionnee) != 0)
+                {
+                    afficher_erreur("Erreur lors du replay de la partie.");
+                    // lancer_jeu();
+                }
                 break;
             // case '3':
             //     printf("Parametres\n");
@@ -251,7 +382,7 @@ char afficher_menu()
                 break;
             case '4':
                 printf("Statistiques\n");
-                 display_statistics();
+                display_statistics();
                 break;
             case '5':
                 printf("Quitter le jeu\n");

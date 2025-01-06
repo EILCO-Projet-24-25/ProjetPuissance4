@@ -25,6 +25,6 @@ int jouer_ordinateur(char **grille, int lignes, int colonnes, int niveau, char p
 int jouer_tour_joueur(char **grille, int lignes, int colonnes, char pion, char *nomJoueur, int difficulte);
 int random_1_2();
 void lancer_jeu();
-void partie_ordi(char **grille, int lignes, int colonnes, char *joueur1, char *joueur2, int difficulte, int modeChoisi, int choix, char pion1, char pion2);
+void partie_ordi(char **grille, int lignes, int colonnes, char *joueur1, char *joueur2, int difficulte, int modeChoisi, int choix, char pion1, char pion2, char *nomPartie);
 
 #endif // JEU_H_INCLUDED

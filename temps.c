@@ -19,7 +19,7 @@
 #include <fcntl.h>
 #endif
 
-// Fonction pour initialiser le générateur de nombres aléatoires
+// Fonction pour initialiser le generateur de nombres aleatoires
 void init_random()
 {
     srand((unsigned)time(NULL));
@@ -35,7 +35,7 @@ void set_terminal_mode(int enable)
         // Sauvegarder les paramètres actuels du terminal
         tcgetattr(STDIN_FILENO, &oldt);
         newt = oldt;
-        // Désactiver le mode canonique et l'écho
+        // Desactiver le mode canonique et l'echo
         newt.c_lflag &= ~(ICANON | ECHO);
         tcsetattr(STDIN_FILENO, TCSANOW, &newt);
         // Mettre stdin en mode non-bloquant
@@ -49,31 +49,31 @@ void set_terminal_mode(int enable)
 }
 #endif
 
-// Fonction pour valider que la chaîne saisie représente un entier valide
+// Fonction pour valider que la chaîne saisie represente un entier valide
 int validation_saisie(const char *input, int *result)
 {
     if (input == NULL || *input == '\0')
     {
-        return 0; // Entrée vide
+        return 0; // Entree vide
     }
 
     char *endptr;
     long val = strtol(input, &endptr, 10);
 
-    // Vérifier s'il y a des caractères non numériques
+    // Verifier s'il y a des caractères non numeriques
     if (*endptr != '\0')
     {
-        return 0; // Entrée invalide
+        return 0; // Entree invalide
     }
 
-    // Vérifier que la valeur est dans les limites d'un int
+    // Verifier que la valeur est dans les limites d'un int
     if (val < INT_MIN || val > INT_MAX)
     {
-        return 0; // Dépassement de capacité
+        return 0; // Depassement de capacite
     }
 
     *result = (int)val;
-    return 1; // Entrée valide
+    return 1; // Entree valide
 }
 
 #ifdef _WIN32
@@ -82,7 +82,7 @@ int validation_saisie(const char *input, int *result)
 int saisir_entier_avec_gestion_temps(int timeout_ms, int *result)
 {
     int elapsed = 0;
-    const int step = 100; // Intervalle de vérification en ms
+    const int step = 100; // Intervalle de verification en ms
     char buffer[20];
     int index = 0;
 
@@ -92,7 +92,7 @@ int saisir_entier_avec_gestion_temps(int timeout_ms, int *result)
         {
             int c = _getch();
             if (c == '\r')
-            { // Touche Entrée
+            { // Touche Entree
                 buffer[index] = '\0';
                 if (validation_saisie(buffer, result))
                 {
@@ -100,7 +100,7 @@ int saisir_entier_avec_gestion_temps(int timeout_ms, int *result)
                 }
                 else
                 {
-                    printf("\nEntrée invalide. Veuillez saisir un entier valide.\n");
+                    printf("\nEntree invalide. Veuillez saisir un entier valide.\n");
                     return 0; // Saisie invalide
                 }
             }
@@ -109,7 +109,7 @@ int saisir_entier_avec_gestion_temps(int timeout_ms, int *result)
                 if (index > 0)
                 {
                     index--;
-                    printf("\b \b"); // Supprimer le caractère affiché
+                    printf("\b \b"); // Supprimer le caractère affiche
                 }
             }
             // Acceptation des signes '+' et '-' en première position
@@ -128,7 +128,7 @@ int saisir_entier_avec_gestion_temps(int timeout_ms, int *result)
         Sleep(step);
         elapsed += step;
     }
-    printf("\nTemps écoulé !\n");
+    printf("\nTemps ecoule !\n");
     return 0; // Timeout
 }
 #else
@@ -159,7 +159,7 @@ int saisir_entier_avec_gestion_temps(int timeout_ms, int *result)
         {
             char c = getchar();
             if (c == '\n')
-            { // Touche Entrée
+            { // Touche Entree
                 buffer[index] = '\0';
                 set_terminal_mode(0); // Restaurer le terminal
                 if (validation_saisie(buffer, result))
@@ -168,7 +168,7 @@ int saisir_entier_avec_gestion_temps(int timeout_ms, int *result)
                 }
                 else
                 {
-                    printf("\nEntrée invalide. Veuillez saisir un entier valide.\n");
+                    printf("\nEntree invalide. Veuillez saisir un entier valide.\n");
                     return 0; // Saisie invalide
                 }
             }
@@ -177,7 +177,7 @@ int saisir_entier_avec_gestion_temps(int timeout_ms, int *result)
                 if (index > 0)
                 {
                     index--;
-                    printf("\b \b"); // Supprimer le caractère affiché
+                    printf("\b \b"); // Supprimer le caractère affiche
                 }
             }
             // Acceptation des signes '+' et '-' en première position
@@ -194,24 +194,24 @@ int saisir_entier_avec_gestion_temps(int timeout_ms, int *result)
             }
         }
 
-        // Calculer le temps écoulé
+        // Calculer le temps ecoule
         gettimeofday(&current, NULL);
         int elapsed = (current.tv_sec - start.tv_sec) * 1000 + (current.tv_usec - start.tv_usec) / 1000;
         time_left = timeout_ms - elapsed;
     }
 
     set_terminal_mode(0); // Restaurer le terminal
-    printf("\nTemps écoulé !\n");
+    printf("\nTemps ecoule !\n");
     return 0; // Timeout
 }
 #endif
 
 void update_statistics(char *player_name, int victory, int points)
 {
-    // printf("Début de la mise à jour des statistiques pour %s\n", player_name);
-    fflush(stdout); // S'assurer que la sortie est affichée immédiatement
+    // printf("Debut de la mise à jour des statistiques pour %s\n", player_name);
+    fflush(stdout); // S'assurer que la sortie est affichee immediatement
 
-    // Vérifier les paramètres
+    // Verifier les paramètres
     if (player_name == NULL)
     {
         fprintf(stderr, "Erreur : Le nom du joueur ne peut pas être NULL.\n");
@@ -228,7 +228,7 @@ void update_statistics(char *player_name, int victory, int points)
     strncpy(nom_joueur, player_name, sizeof(nom_joueur) - 1);
     nom_joueur[sizeof(nom_joueur) - 1] = '\0';
 
-    // Supprimer les espaces en début
+    // Supprimer les espaces en debut
     char *start = nom_joueur;
     while (isspace((unsigned char)*start))
         start++;
@@ -248,7 +248,7 @@ void update_statistics(char *player_name, int victory, int points)
             nom_joueur[i] = '_';
         }
     }
-    // printf("Nom du joueur nettoyé : %s\n", nom_joueur);
+    // printf("Nom du joueur nettoye : %s\n", nom_joueur);
     fflush(stdout);
 
     // Ouvrir le fichier de statistiques pour lecture
@@ -257,7 +257,7 @@ void update_statistics(char *player_name, int victory, int points)
 
     if (fp_write == NULL)
     {
-        fprintf(stderr, "Erreur : Impossible d'ouvrir le fichier temporaire pour l'écriture.\n");
+        fprintf(stderr, "Erreur : Impossible d'ouvrir le fichier temporaire pour l'ecriture.\n");
         if (fp_read != NULL)
             fclose(fp_read);
         return;
@@ -277,7 +277,7 @@ void update_statistics(char *player_name, int victory, int points)
         fflush(stdout);
         while (fgets(ligne, sizeof(ligne), fp_read))
         {
-            // Variables pour stocker les données de chaque ligne
+            // Variables pour stocker les donnees de chaque ligne
             char nom[100];
             int victoires = 0, defaites = 0, total_points = 0;
 
@@ -317,7 +317,7 @@ void update_statistics(char *player_name, int victory, int points)
                     victoires = atoi(token);
                 }
 
-                // Lire les défaites
+                // Lire les defaites
                 token = strtok(NULL, ",");
                 if (token != NULL)
                 {
@@ -337,7 +337,7 @@ void update_statistics(char *player_name, int victory, int points)
                 // Comparer avec le nom du joueur à mettre à jour
                 if (strcmp(nom, nom_joueur) == 0)
                 {
-                    // printf("Joueur trouvé : %s\n", nom_joueur);
+                    // printf("Joueur trouve : %s\n", nom_joueur);
                     fflush(stdout);
                     // Mettre à jour les statistiques
                     if (victory)
@@ -351,14 +351,14 @@ void update_statistics(char *player_name, int victory, int points)
                     total_points += points;
                     joueur_trouve = 1;
 
-                    // Écrire la ligne mise à jour dans le fichier temporaire
+                    // ecrire la ligne mise à jour dans le fichier temporaire
                     fprintf(fp_write, "%s,%d,%d,%d\n", nom, victoires, defaites, total_points);
                     // printf("Statistiques mises à jour pour %s.\n", nom);
                     fflush(stdout);
                 }
                 else
                 {
-                    // Écrire la ligne inchangée dans le fichier temporaire
+                    // ecrire la ligne inchangee dans le fichier temporaire
                     fprintf(fp_write, "%s,%d,%d,%d\n", nom, victoires, defaites, total_points);
                 }
             }
@@ -367,15 +367,15 @@ void update_statistics(char *player_name, int victory, int points)
     }
     else
     {
-        // printf("Fichier statistique.txt non trouvé. Un nouveau fichier sera créé.\n");
+        // printf("Fichier statistique.txt non trouve. Un nouveau fichier sera cree.\n");
         fflush(stdout);
     }
 
     if (!joueur_trouve)
     {
-        // Ajouter le joueur avec les statistiques appropriées
+        // Ajouter le joueur avec les statistiques appropriees
         fprintf(fp_write, "%s,%d,%d,%d\n", nom_joueur, victory ? 1 : 0, victory ? 0 : 1, points);
-        // printf("Nouvel enregistrement pour le joueur %s ajouté.\n", nom_joueur);
+        // printf("Nouvel enregistrement pour le joueur %s ajoute.\n", nom_joueur);
         fflush(stdout);
     }
 
@@ -399,7 +399,7 @@ void update_statistics(char *player_name, int victory, int points)
     }
     else
     {
-        // printf("Fichier temporaire renommé en statistique.txt avec succès.\n");
+        // printf("Fichier temporaire renomme en statistique.txt avec succès.\n");
         fflush(stdout);
     }
 
@@ -409,7 +409,7 @@ void update_statistics(char *player_name, int victory, int points)
     // }
     // else
     // {
-    //     // printf("Nouvel enregistrement pour le joueur %s ajouté.\n", nom_joueur);
+    //     // printf("Nouvel enregistrement pour le joueur %s ajoute.\n", nom_joueur);
     // }
 
     // printf("Fin de la mise à jour des statistiques pour %s\n", player_name);
@@ -422,12 +422,12 @@ void display_statistics() {
 
     FILE *fp_read = fopen("statistique.txt", "r");
     if (fp_read == NULL) {
-        printf("Aucune statistique trouvée. Le fichier 'statistique.txt' n'existe pas.\n");
+        printf("Aucune statistique trouvee. Le fichier 'statistique.txt' n'existe pas.\n");
         return;
     }
 
-    // Tableaux parallèles pour stocker les données
-    int capacity = 10; // Capacité initiale
+    // Tableaux parallèles pour stocker les donnees
+    int capacity = 10; // Capacite initiale
     int count = 0;
     char **names = malloc(capacity * sizeof(char *));
     int *victories = malloc(capacity * sizeof(int));
@@ -435,7 +435,7 @@ void display_statistics() {
     int *points = malloc(capacity * sizeof(int));
 
     if (names == NULL || victories == NULL || defeats == NULL || points == NULL) {
-        fprintf(stderr, "Erreur : Impossible d'allouer la mémoire pour les données.\n");
+        fprintf(stderr, "Erreur : Impossible d'allouer la memoire pour les donnees.\n");
         if (names) free(names);
         if (victories) free(victories);
         if (defeats) free(defeats);
@@ -460,7 +460,7 @@ void display_statistics() {
         if (token == NULL) continue;
         victoires_temp = atoi(token);
 
-        // Lire les défaites
+        // Lire les defaites
         token = strtok(NULL, ",");
         if (token == NULL) continue;
         defaites_temp = atoi(token);
@@ -478,8 +478,8 @@ void display_statistics() {
             int *temp_defeats = realloc(defeats, capacity * sizeof(int));
             int *temp_points = realloc(points, capacity * sizeof(int));
             if (temp_names == NULL || temp_victories == NULL || temp_defeats == NULL || temp_points == NULL) {
-                fprintf(stderr, "Erreur : Impossible de réallouer la mémoire pour les données.\n");
-                // Libérer tout
+                fprintf(stderr, "Erreur : Impossible de reallouer la memoire pour les donnees.\n");
+                // Liberer tout
                 for (int i = 0; i < count; i++) {
                     free(names[i]);
                 }
@@ -506,8 +506,8 @@ void display_statistics() {
         // Allouer et copier le nom
         names[count] = malloc(strlen(nom) + 1);
         if (names[count] == NULL) {
-            fprintf(stderr, "Erreur : Impossible d'allouer la mémoire pour le nom.\n");
-            // Libérer tout
+            fprintf(stderr, "Erreur : Impossible d'allouer la memoire pour le nom.\n");
+            // Liberer tout
             for (int i = 0; i < count; i++) {
                 free(names[i]);
             }
@@ -528,7 +528,7 @@ void display_statistics() {
     fclose(fp_read);
 
     if (count == 0) {
-        printf("Aucune statistique trouvée dans le fichier 'statistique.txt'.\n");
+        printf("Aucune statistique trouvee dans le fichier 'statistique.txt'.\n");
         free(names);
         free(victories);
         free(defeats);
@@ -536,26 +536,26 @@ void display_statistics() {
         return;
     }
 
-    // Trier les joueurs par points décroissants (Bubble sort)
+    // Trier les joueurs par points decroissants (Bubble sort)
     for (int i = 0; i < count - 1; i++) {
         for (int j = 0; j < count - i - 1; j++) {
             if (points[j] < points[j + 1]) {
-                // Échanger points
+                // echanger points
                 int temp_pt = points[j];
                 points[j] = points[j + 1];
                 points[j + 1] = temp_pt;
 
-                // Échanger victoires
+                // echanger victoires
                 int temp_vic = victories[j];
                 victories[j] = victories[j + 1];
                 victories[j + 1] = temp_vic;
 
-                // Échanger défaites
+                // echanger defaites
                 int temp_def = defeats[j];
                 defeats[j] = defeats[j + 1];
                 defeats[j + 1] = temp_def;
 
-                // Échanger noms
+                // echanger noms
                 char *temp_nom = names[j];
                 names[j] = names[j + 1];
                 names[j + 1] = temp_nom;
@@ -575,7 +575,7 @@ void display_statistics() {
         printf("%-5d %-25s %-10d %-10d %-10d\n", rank, names[i], victories[i], defeats[i], points[i]);
     }
 
-    // Libérer la mémoire
+    // Liberer la memoire
     for (int i = 0; i < count; i++) {
         free(names[i]);
     }
