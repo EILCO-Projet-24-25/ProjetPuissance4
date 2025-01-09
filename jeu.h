@@ -22,6 +22,7 @@ int verifier_victoire(char **grille, int lignes, int colonnes, char joueur);
 int chargerStatistiques(const char *nomFichier, StatistiqueJoueur stats[], int tailleMax);
 void sauvegarderStatistiques(const char *nomFichier, StatistiqueJoueur stats[], int taille);
 void mettreAJourStatistiques(StatistiqueJoueur stats[], int *taille, const char *nomJoueur, int victoire, int defaite, int nulle);
+int evaluer_position(char **grille, int lignes, int colonnes, char pionIA, char pionAdverse);
 int jouer_ordinateur(char **grille, int lignes, int colonnes, int niveau, char pion1, char pion2);
 int jouer_tour_joueur(char **grille, int lignes, int colonnes, char pion, char *nomJoueur, int difficulte);
 int random_1_2();
