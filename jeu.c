@@ -692,17 +692,17 @@ void partie_ordi(char **grille, int lignes, int colonnes, char *joueur1, char *j
             if (difficulte == 1)
             {
                 mise_a_jour_statistique(joueur1, 1, 50, temps_execution);
-                mise_a_jour_statistique(joueur2, 0, 10, 3600);
+                mise_a_jour_statistique(joueur2, 0, 10, 0);
             }
             else if (difficulte == 2)
             {
                 mise_a_jour_statistique(joueur1, 1, 100, temps_execution);
-                mise_a_jour_statistique(joueur2, 0, 10, 3600);
+                mise_a_jour_statistique(joueur2, 0, 10, 0);
             }
             else if (difficulte == 3)
             {
                 mise_a_jour_statistique(joueur1, 1, 150, temps_execution);
-                mise_a_jour_statistique(joueur2, 0, 10, 3600);
+                mise_a_jour_statistique(joueur2, 0, 10, 0);
             }
             jeu_en_cours = 0;
             break;
@@ -733,17 +733,17 @@ void partie_ordi(char **grille, int lignes, int colonnes, char *joueur1, char *j
             if (difficulte == 1)
             {
                 mise_a_jour_statistique(joueur2, 1, 50, temps_execution);
-                mise_a_jour_statistique(joueur1, 0, 10, 3600);
+                mise_a_jour_statistique(joueur1, 0, 10, 0);
             }
             else if (difficulte == 2)
             {
                 mise_a_jour_statistique(joueur2, 1, 100, temps_execution);
-                mise_a_jour_statistique(joueur1, 0, 10, 3600);
+                mise_a_jour_statistique(joueur1, 0, 10, 0);
             }
             else if (difficulte == 3)
             {
                 mise_a_jour_statistique(joueur2, 1, 150, temps_execution);
-                mise_a_jour_statistique(joueur1, 0, 10, 3600);
+                mise_a_jour_statistique(joueur1, 0, 10, 0);
             }
             jeu_en_cours = 0;
             break;
@@ -838,13 +838,13 @@ void partie_joueur(char **grille, int lignes, int colonnes, char *joueur1, char 
             if (strcmp(startedJoueur, joueur1) == 0)
             {
                 mise_a_jour_statistique(startedJoueur, 1, 50, temps_execution);
-                mise_a_jour_statistique(joueur2, 0, 10, 3600);
+                mise_a_jour_statistique(joueur2, 0, 10, 0);
             }
             else if (strcmp(startedJoueur, joueur2) == 0)
             {
                 {
                     mise_a_jour_statistique(startedJoueur, 1, 50, temps_execution);
-                    mise_a_jour_statistique(joueur1, 0, 10, 3600);
+                    mise_a_jour_statistique(joueur1, 0, 10, 0);
                 }
             }
 

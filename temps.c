@@ -359,7 +359,7 @@ void mise_a_jour_statistique(char *nomJoueur, int victoire, int points, int dure
                     joueur_trouve = 1;
 
                     // ecrire la ligne mise à jour dans le fichier temporaire
-                    fprintf(fp_write, "%s,%d,%d,%d,%d\n", nom, victoires, defaites, total_points, victoire == 1 ? duree <= durees ? duree : durees : duree);
+                    fprintf(fp_write, "%s,%d,%d,%d,%d\n", nom, victoires, defaites, total_points, victoire == 1 ? duree <= durees ? duree : durees : durees);
                     // printf("Statistiques mises à jour pour %s.\n", nom);
                     fflush(stdout);
                 }
@@ -608,7 +608,7 @@ void display_statistics()
     }
 
     // Afficher le classement
-    printf("%-5s %-25s %-10s %-10s %-10s %-10s\n", "Rang", "Nom du Joueur", "Victoires", "Defaites", "Points", "Meilleure duree");
+    printf("%-5s %-25s %-10s %-10s %-10s %-10s\n", "Rang", "Nom du Joueur", "Victoires", "Defaites", "Points", "Meilleures durees");
     printf("------------------------------------------------------------------------------------------\n");
 
     int rank = 1;
