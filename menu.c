@@ -367,7 +367,7 @@ char afficher_menu()
                 effacer_ecran();
                 char *partieselectionnee = listesParties();
                 // strcpy(partieselectionnee,listesParties());
-                if (replayPartie(partieselectionnee) != 0)
+                if (rejouer_partie(partieselectionnee) != 0)
                 {
                     afficher_erreur("Erreur lors du replay de la partie.");
                     // lancer_jeu();

@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 #include <time.h>
+#include <sys/time.h> 
 #include "sauvegarde.h"
 #include "menu.h"
 #include "parametre.h"
@@ -604,11 +606,13 @@ int jouer_tour_joueur(char **grille, int lignes, int colonnes, char pion, char *
             coup_valide = deposerPignon(grille, colonne, colonnes, lignes, pion);
             if (!coup_valide)
             {
+                printf("\n");
                 printf("Colonne pleine. Choisissez une autre colonne.\n");
             }
         }
         else
         {
+            printf("\n");
             afficher_erreur("Choix invalide. Veuillez choisir bonne colonne.\n");
         }
     }
@@ -628,9 +632,13 @@ int random_1_2()
     return (rand() % 2) + 1; // Genère un nombre entre 1 et 2
 }
 
-void partie_ordi(char **grille, int lignes, int colonnes, char *joueur1, char *joueur2, int difficulte, int modeChoisi, int choix, char pion1, char pion2, char *nomPartie)
+void partie_ordi(char **grille, int lignes, int colonnes, char *joueur1, char *joueur2, int difficulte, int modeChoisi, int choix, char pion1, char pion2, char *nomPartie, struct timespec *debut, struct timespec *fin)
 {
     int jeu_en_cours = 1;
+    if (debut->tv_sec != 0 && debut->tv_nsec != 0)
+    {
+        clock_gettime(CLOCK_MONOTONIC, debut);
+    }
     while (jeu_en_cours)
     {
         // Tour du joueur humain
@@ -647,6 +655,8 @@ void partie_ordi(char **grille, int lignes, int colonnes, char *joueur1, char *j
                 sauvegarderJeu(grille, lignes, colonnes, "savegarde.txt", joueur1, joueur2, difficulte, modeChoisi, choix, pion1, pion2, nomPartie);
                 // effacer_ecran();
                 free(grille);
+                free(debut);
+                free(fin);
                 free(joueur1);
                 free(joueur2);
                 quitter = 1;
@@ -657,6 +667,8 @@ void partie_ordi(char **grille, int lignes, int colonnes, char *joueur1, char *j
                 // Quitter sans sauvegarder
                 effacer_ecran();
                 free(grille);
+                free(debut);
+                free(fin);
                 free(joueur1);
                 free(joueur2);
                 quitter = 1;
@@ -674,20 +686,23 @@ void partie_ordi(char **grille, int lignes, int colonnes, char *joueur1, char *j
         if (victoire_joueur == 1)
         {
             afficher_succes("Le joueur a gagne\n");
+            clock_gettime(CLOCK_MONOTONIC, fin);
+            double temps_execution = (fin->tv_sec - debut->tv_sec) + (fin->tv_nsec - debut->tv_nsec) / 1e9;
+            printf("Temps de jeu est de : %f secondes\n", temps_execution);
             if (difficulte == 1)
             {
-                update_statistics(joueur1, 1, 50);
-                update_statistics(joueur2, 0, 10);
+                mise_a_jour_statistique(joueur1, 1, 50, temps_execution);
+                mise_a_jour_statistique(joueur2, 0, 10, 3600);
             }
             else if (difficulte == 2)
             {
-                update_statistics(joueur1, 1, 100);
-                update_statistics(joueur2, 0, 10);
+                mise_a_jour_statistique(joueur1, 1, 100, temps_execution);
+                mise_a_jour_statistique(joueur2, 0, 10, 3600);
             }
             else if (difficulte == 3)
             {
-                update_statistics(joueur1, 1, 150);
-                update_statistics(joueur2, 0, 10);
+                mise_a_jour_statistique(joueur1, 1, 150, temps_execution);
+                mise_a_jour_statistique(joueur2, 0, 10, 3600);
             }
             jeu_en_cours = 0;
             break;
@@ -711,21 +726,24 @@ void partie_ordi(char **grille, int lignes, int colonnes, char *joueur1, char *j
         if (victoire_ordi == 1)
         {
             afficher_succes("L'Ordi a gagne\n");
+            clock_gettime(CLOCK_MONOTONIC, fin);
+            double temps_execution = (fin->tv_sec - debut->tv_sec) + (fin->tv_nsec - debut->tv_nsec) / 1e9;
+            printf("Temps de jeu est de : %f secondes\n", temps_execution);
 
             if (difficulte == 1)
             {
-                update_statistics(joueur2, 1, 50);
-                update_statistics(joueur1, 0, 10);
+                mise_a_jour_statistique(joueur2, 1, 50, temps_execution);
+                mise_a_jour_statistique(joueur1, 0, 10, 3600);
             }
             else if (difficulte == 2)
             {
-                update_statistics(joueur2, 1, 100);
-                update_statistics(joueur1, 0, 10);
+                mise_a_jour_statistique(joueur2, 1, 100, temps_execution);
+                mise_a_jour_statistique(joueur1, 0, 10, 3600);
             }
             else if (difficulte == 3)
             {
-                update_statistics(joueur2, 1, 150);
-                update_statistics(joueur1, 0, 10);
+                mise_a_jour_statistique(joueur2, 1, 150, temps_execution);
+                mise_a_jour_statistique(joueur1, 0, 10, 3600);
             }
             jeu_en_cours = 0;
             break;
@@ -738,13 +756,16 @@ void partie_ordi(char **grille, int lignes, int colonnes, char *joueur1, char *j
         effacer_ecran();
         viderGrille(grille, lignes, colonnes);
         nomPartie = creerPartie(joueur1, joueur2);
-        partie_ordi(grille, lignes, colonnes, joueur1, joueur2, difficulte, modeChoisi, choix, pion1, pion2, nomPartie);
+        partie_ordi(grille, lignes, colonnes, joueur1, joueur2, difficulte, modeChoisi, choix, pion1, pion2, nomPartie, debut, fin);
     }
 }
-void partie_joueur(char **grille, int lignes, int colonnes, char *joueur1, char *joueur2, int difficulte, int modeChoisi, int choix, char pion1, char pion2, char *startedPion, char *startedJoueur, int *tour, char *nomPartie)
+void partie_joueur(char **grille, int lignes, int colonnes, char *joueur1, char *joueur2, int difficulte, int modeChoisi, int choix, char pion1, char pion2, char *startedPion, char *startedJoueur, int *tour, char *nomPartie, struct timespec *debut, struct timespec *fin)
 {
     int jeu_en_cours = 1;
-
+    if (debut->tv_sec != 0 && debut->tv_nsec != 0)
+    {
+        clock_gettime(CLOCK_MONOTONIC, debut);
+    }
     while (jeu_en_cours)
     {
         // Tour du joueur humain
@@ -772,6 +793,8 @@ void partie_joueur(char **grille, int lignes, int colonnes, char *joueur1, char 
                 sauvegarderJeu(grille, lignes, colonnes, "savegarde.txt", joueur1, joueur2, *tour, modeChoisi, choix, pion1, pion2, nomPartie);
                 // effacer_ecran();
                 free(grille);
+                free(debut);
+                free(fin);
                 free(joueur1);
                 free(joueur2);
                 quitter = 1;
@@ -782,6 +805,8 @@ void partie_joueur(char **grille, int lignes, int colonnes, char *joueur1, char 
                 // Quitter sans sauvegarder
                 effacer_ecran();
                 free(grille);
+                free(debut);
+                free(fin);
                 free(joueur1);
                 free(joueur2);
                 quitter = 1;
@@ -807,17 +832,19 @@ void partie_joueur(char **grille, int lignes, int colonnes, char *joueur1, char 
         {
             afficher_succes("Vous avez gagne la partie\n");
             // printf("diffucultes %d\n", difficulte);
-
+            clock_gettime(CLOCK_MONOTONIC, fin);
+            double temps_execution = (fin->tv_sec - debut->tv_sec) + (fin->tv_nsec - debut->tv_nsec) / 1e9;
+            printf("Temps de jeu est de : %f secondes\n", temps_execution);
             if (strcmp(startedJoueur, joueur1) == 0)
             {
-                update_statistics(startedJoueur, 1, 50);
-                update_statistics(joueur2, 0, 10);
+                mise_a_jour_statistique(startedJoueur, 1, 50, temps_execution);
+                mise_a_jour_statistique(joueur2, 0, 10, 3600);
             }
             else if (strcmp(startedJoueur, joueur2) == 0)
             {
                 {
-                    update_statistics(startedJoueur, 1, 50);
-                    update_statistics(joueur1, 0, 10);
+                    mise_a_jour_statistique(startedJoueur, 1, 50, temps_execution);
+                    mise_a_jour_statistique(joueur1, 0, 10, 3600);
                 }
             }
 
@@ -834,7 +861,7 @@ void partie_joueur(char **grille, int lignes, int colonnes, char *joueur1, char 
         viderGrille(grille, lignes, colonnes);
         *tour = (*tour % 2) + 1;
         nomPartie = creerPartie(joueur1, joueur2);
-        partie_joueur(grille, lignes, colonnes, joueur1, joueur2, difficulte, modeChoisi, choix, pion1, pion2, startedPion, startedJoueur, tour, nomPartie);
+        partie_joueur(grille, lignes, colonnes, joueur1, joueur2, difficulte, modeChoisi, choix, pion1, pion2, startedPion, startedJoueur, tour, nomPartie, debut, fin);
     }
 }
 
@@ -850,6 +877,13 @@ void lancer_jeu()
     char *startedJoueur = (char *)malloc(12 * sizeof(char));
     char startedPion;
     char *nompartie = (char *)malloc(50 * sizeof(char));
+    struct timespec *debut = malloc(sizeof(struct timespec));
+    struct timespec *fin = malloc(sizeof(struct timespec));
+    if (debut == NULL || fin == NULL)
+    {
+        fprintf(stderr, "Erreur d'allocation mémoire\n");
+        return EXIT_FAILURE;
+    }
 
     // printf("Choix %d\n", choix);
     int oldChoice = 1;
@@ -913,14 +947,14 @@ void lancer_jeu()
         }
         if (modeChoisi == 1)
         {
-            partie_ordi(grille, lignes, colonnes, joueur1, joueur2, difficulte, modeChoisi, choix, pion1, pion2, nompartie);
+            partie_ordi(grille, lignes, colonnes, joueur1, joueur2, difficulte, modeChoisi, choix, pion1, pion2, nompartie, debut, fin);
         }
 
         else if (modeChoisi == 2)
         {
             // Jeu contre un autre joueur
             difficulte = 0;
-            partie_joueur(grille, lignes, colonnes, joueur1, joueur2, difficulte, modeChoisi, choix, pion1, pion2, &startedPion, startedJoueur, &tour, nompartie);
+            partie_joueur(grille, lignes, colonnes, joueur1, joueur2, difficulte, modeChoisi, choix, pion1, pion2, &startedPion, startedJoueur, &tour, nompartie, debut, fin);
         }
         if (choix == 5)
         {

@@ -238,7 +238,7 @@ void saisieNomJoueur(char *joueur1, char *joueur2, int choix)
 }
 
 // Fonction pour lire et rejouer la partie depuis un fichier de sauvegarde
-int replayPartie(const char *nomFichier)
+int rejouer_partie(const char *nomFichier)
 {
     char cheminFichier[300];
     snprintf(cheminFichier, sizeof(cheminFichier), "parties/%s", nomFichier);
@@ -276,11 +276,11 @@ int replayPartie(const char *nomFichier)
         {
             sscanf(buffer, "Joueur2: %s", joueur2);
         }
-        else if (strncmp(buffer, "PionJoueur1:", 13) == 0)
+        else if (strncmp(buffer, "PionJoueur1:", 12) == 0)
         {
             sscanf(buffer, "PionJoueur1: %c", &pionJoueur1);
         }
-        else if (strncmp(buffer, "PionJoueur2:", 13) == 0)
+        else if (strncmp(buffer, "PionJoueur2:", 12) == 0)
         {
             sscanf(buffer, "PionJoueur2: %c", &pionJoueur2);
         }
@@ -297,7 +297,7 @@ int replayPartie(const char *nomFichier)
         return -1;
     }
 
-    printf("Rejouer la partie entre %s (%c) et %s (%c)\n", joueur1, pionJoueur1, joueur2, pionJoueur2);
+    printf("Revoir la partie entre joueur1 %s (%c) et joueur2 %s (%c)\n", joueur1, pionJoueur1, joueur2, pionJoueur2);
 
     // Allouer la grille
     char **grille = (char **)malloc(lignes * sizeof(char *));

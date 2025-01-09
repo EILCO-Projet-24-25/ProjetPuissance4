@@ -1395,7 +1395,7 @@
 	"begin_code.h"
 	"close_code.h"
 
-1736155508 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\menu.c
+1736456232 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\menu.c
 	<stdio.h>
 	<ctype.h>
 	<stdlib.h>
@@ -1408,11 +1408,13 @@
 
 1736118321 c:\users\hp laptop\documents\ing1\algo\projetpuissance4\menu.h
 
-1736167874 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\jeu.c
+1736458451 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\jeu.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
+	<unistd.h>
 	<time.h>
+	<sys/time.h>
 	"sauvegarde.h"
 	"menu.h"
 	"parametre.h"
@@ -1420,22 +1422,23 @@
 	"jeu.h"
 	<limits.h>
 
-1736115817 c:\users\hp laptop\documents\ing1\algo\projetpuissance4\jeu.h
+1736458009 c:\users\hp laptop\documents\ing1\algo\projetpuissance4\jeu.h
 
 1730993202 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\puissance.c
 
-1736155508 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\sauvegarde.c
+1736453372 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\sauvegarde.c
 	<stdio.h>
 	<stdlib.h>
+	<string.h>
 	<time.h>
 	"jeu.h"
 	<sys/stat.h>
 	<direct.h>
 	<sys/types.h>
 
-1736168381 c:\users\hp laptop\documents\ing1\algo\projetpuissance4\parametre.h
+1736456232 c:\users\hp laptop\documents\ing1\algo\projetpuissance4\parametre.h
 
-1736159228 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\parametre.c
+1736456232 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\parametre.c
 	<stdlib.h>
 	<stdio.h>
 	<ctype.h>
@@ -1443,10 +1446,6 @@
 	<strings.h>
 	"menu.h"
 	"jeu.h"
-	<windows.h>
-	<X11/Xlib.h>
-	<X11/keysym.h>
-	<unistd.h>
 
 1736117014 c:\users\hp laptop\documents\ing1\algo\projetpuissance4\sauvegarde.h
 
@@ -1491,9 +1490,9 @@
 	<stdlib.h>
 	"jeu.h"
 
-1734700747 c:\users\hp laptop\documents\ing1\algo\projetpuissance4\temps.h
+1736456476 c:\users\hp laptop\documents\ing1\algo\projetpuissance4\temps.h
 
-1736155508 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\temps.c
+1736456957 source:c:\users\hp laptop\documents\ing1\algo\projetpuissance4\temps.c
 	<stdio.h>
 	<stdlib.h>
 	<time.h>
